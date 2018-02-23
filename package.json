@@ -1,0 +1,23 @@
+{
+  "name": "mws-restaurant-stage-1",
+  "version": "1.0.0",
+  "description": "MWS Course Project 1",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seabadger-io/mws-restaurant-stage-1.git"
+  },
+  "author": "Gabor Szoboszlai <sb@seabadger.io>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seabadger-io/mws-restaurant-stage-1/issues"
+  },
+  "homepage": "https://github.com/seabadger-io/mws-restaurant-stage-1#readme",
+  "devDependencies": {
+    "eslint": "^4.18.1",
+    "eslint-config-google": "^0.9.1"
+  }
+}
