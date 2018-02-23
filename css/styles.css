@@ -181,12 +181,13 @@ nav h1 a {
 }
 
 .restaurant-img {
-  width: 50%;
+  padding: 10px;
+  width: calc(100% - 20px);
 }
 
 .restaurant-summary {
   padding: 10px;
-  width: calc(50% - 20px);
+  width: calc(100% - 20px);
 }
 
 /* ====================== Restaurant Details ====================== */
