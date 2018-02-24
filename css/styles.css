@@ -18,7 +18,7 @@ body {
 }
 
 a {
-	color: orange;
+	color: #ffdfc9;
 	text-decoration: none;
 }
 
@@ -47,7 +47,7 @@ main {
 
 footer {
   background-color: #444;
-  color: #aaa;
+  color: #b1b1b1;
   font-size: 8pt;
   letter-spacing: 1px;
   padding: 25px;
@@ -162,12 +162,13 @@ nav h1 a {
 
 .filter-options h2 {
   color: white;
-  font-size: 1rem;
+  font-size: 1.2em;
   font-weight: normal;
-  line-height: 1;
-  margin: 0 20px;
+  line-height: 1.5em;
   width: 100%;
-  margin: 5px;
+  margin: 0 10px 5px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .filter-options select {
