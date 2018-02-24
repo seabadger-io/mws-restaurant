@@ -10,7 +10,26 @@ var markers = [];
 document.addEventListener('DOMContentLoaded', () => {
   fetchNeighborhoods();
   fetchCuisines();
+  initializeMapToggle();
 });
+
+/**
+ * Add event listener to toggle-map link
+ */
+initializeMapToggle = () => {
+  document.querySelector('#toggle-map').addEventListener('click', (event) => {
+    event.preventDefault();
+    const map = document.querySelector('#map-container');
+    if (event.target.dataset.show === 'false') {
+      event.target.innerHTML = 'Hide results map';
+      event.target.dataset.show = 'true';
+    } else {
+      event.target.innerHTML = 'Show results on map';
+      event.target.dataset.show = 'false';
+    }
+    map.classList.toggle('hidden');
+  });
+};
 
 /**
  * Fetch all neighborhoods and set their HTML.

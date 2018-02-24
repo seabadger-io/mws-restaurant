@@ -1,9 +1,12 @@
 @charset "utf-8";
 /* CSS Document */
 
-body,td,th,p{
+body,
+td,
+th,
+p {
 	font-family: Arial, Helvetica, sans-serif;
-	font-size: 10pt;
+	font-size: 0.8em;
 	color: #333;
 	line-height: 1.5;
 }
@@ -14,19 +17,13 @@ body {
 	position:relative;
 }
 
-ul, li {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 10pt;
-	color: #333;
-}
-
 a {
 	color: orange;
 	text-decoration: none;
 }
 
-a:hover, a:focus {
-	color: #3397db;
+a:hover,
+a:focus {
 	text-decoration: none;
 }
 
@@ -81,11 +78,17 @@ img {
   min-height: 40px;
 }
 
-.button:hover {
+.button:hover,
+.button:focus {
   color: #fff;
+  text-decoration: none;
   -webkit-box-shadow: 4px 4px 10px 1px rgba(0,0,0,0.75);
   -moz-box-shadow: 4px 4px 10px 1px rgba(0,0,0,0.75);
   box-shadow: 4px 4px 10px 1px rgba(0,0,0,0.75);
+}
+
+.hidden {
+  display: none;
 }
 
 /* ====================== Navigation ====================== */
@@ -179,6 +182,17 @@ nav h1 a {
   min-width: 180px;
 }
 
+.map-toggle {
+  width: 100%;
+  text-align: right;
+  font-size: 1.2em;
+  line-height: 2em;
+}
+
+.map-toggle a {
+  margin: 10px;
+}
+
 /* ====================== Restaurant Listing ====================== */
 .restaurants-list {
   list-style: none;
@@ -217,6 +231,7 @@ nav h1 a {
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin: 10px;
+  color: #2966B8;
 }
 
 .restaurant-summary .neighborhood {
