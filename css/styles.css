@@ -95,9 +95,11 @@ nav {
   background-color: #252831;
   text-align:center;
 }
+
 nav h1 {
   margin: auto;
 }
+
 nav h1 a {
   color: #fff;
   font-size: 14pt;
@@ -105,6 +107,7 @@ nav h1 a {
   letter-spacing: 10px;
   text-transform: uppercase;
 }
+
 #breadcrumb {
     padding: 10px 40px 16px;
     list-style: none;
@@ -137,36 +140,43 @@ nav h1 a {
     color: #01447e;
     text-decoration: underline;
 }
+
 /* ====================== Map ====================== */
 #map {
   height: 400px;
   width: 100%;
   background-color: #ccc;
 }
+
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
   width: 100%;
-  height: 50px;
-  background-color: #3397DB;
+  background-color: #2966B8;
   align-items: center;
+  display: flex;
+  flex-wrap: wrap;
 }
+
 .filter-options h2 {
   color: white;
   font-size: 1rem;
   font-weight: normal;
   line-height: 1;
   margin: 0 20px;
+  width: 100%;
+  margin: 5px;
 }
+
 .filter-options select {
   background-color: white;
-  border: 1px solid #fff;
+  border: 1px solid #7f7f7f;
   font-family: Arial,sans-serif;
-  font-size: 11pt;
+  font-size: 1.4em;
   height: 35px;
   letter-spacing: 0;
   margin: 10px;
-  padding: 0 10px;
-  width: 200px;
+  width: calc(100% - 20px);
+  min-width: 180px;
 }
 
 /* ====================== Restaurant Listing ====================== */
