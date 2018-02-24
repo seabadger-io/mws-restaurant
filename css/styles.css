@@ -105,9 +105,9 @@ nav h1 {
 
 nav h1 a {
   color: #fff;
-  font-size: 14pt;
+  font-size: 1.4em;
   font-weight: 200;
-  letter-spacing: 10px;
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
@@ -227,9 +227,8 @@ nav h1 a {
 }
 
 .restaurant-summary h1 {
-  font-size: 1.8em;
+  font-size: 1.6em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   margin: 10px;
   color: #2966B8;
 }
@@ -361,5 +360,17 @@ nav h1 a {
 
   .restaurant-summary {
     width: calc(60% - 30px);
+  }
+}
+
+@media screen and (min-width: 650px) {
+  nav h1 a {
+    font-size: 1.8em;
+    letter-spacing: 10px;
+  }
+
+  .restaurant-summary h1 {
+    letter-spacing: 0.05em;
+    font-size: 1.8em;
   }
 }
