@@ -330,3 +330,11 @@ nav h1 a {
 #restaurant-hours td {
   color: #666;
 }
+
+@media screen and (min-width: 400px) {
+
+  .filter-options select {
+    width: calc(50% - 20px);
+  }
+
+}
