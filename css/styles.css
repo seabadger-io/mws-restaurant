@@ -332,9 +332,19 @@ nav h1 a {
 }
 
 @media screen and (min-width: 400px) {
-
   .filter-options select {
     width: calc(50% - 20px);
   }
+}
 
+@media screen and (min-width: 550px) {
+  .restaurant-img {
+    width: calc(60% - 30px);
+    margin: -15px 0 -15px -15px;
+    height: auto;
+  }
+
+  .restaurant-summary {
+    width: calc(40% - 30px);
+  }
 }
