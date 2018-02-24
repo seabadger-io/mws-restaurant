@@ -225,6 +225,7 @@ nav h1 a {
   border-radius: 1em;
   border: 1px solid #7f7f7f;
   width: 40%;
+  min-width: 120px;
   position: relative;
   right: -60%;
 }
