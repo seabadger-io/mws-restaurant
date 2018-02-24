@@ -11,6 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
   fetchNeighborhoods();
   fetchCuisines();
   initializeMapToggle();
+  document.querySelectorAll('#neighborhoods-select,#cuisines-select').forEach(
+    (el) => {
+      el.addEventListener('change', updateRestaurants);
+    }
+  );
 });
 
 /**
