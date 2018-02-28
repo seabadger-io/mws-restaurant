@@ -32,28 +32,44 @@
 
     <!-- Beginning main -->
     <main id="maincontent">
-  
-      <!-- Beginning restaurant -->
-      <section id="restaurant-container" class="restaurant-details">
-        <h1 id="restaurant-name"></h1>
-        <img id="restaurant-img">
-        <p id="restaurant-cuisine"></p>
-        <p id="restaurant-address"></p>
-        <table id="restaurant-hours"></table>
-      </section>
-      <!-- end restaurant -->
-  
-      <!-- Beginning map -->
-      <section id="map-container">
-        <div id="map"></div>
-      </section>
-      <!-- End map -->
-  
-      <!-- Beginning reviews -->
-      <section id="reviews-container">
-        <ul id="reviews-list"></ul>
-      </section>
-      <!-- End reviews -->
+
+      <div class="single-restaurant">
+
+        <!-- Beginning restaurant -->
+        <section id="restaurant-container" class="single-restaurant-details">
+          <h1 id="restaurant-name"></h1>
+          <div class="restaurant-details-img">
+            <img id="restaurant-img">
+          </div>
+          <div class="restaurant-details-text">
+            <p id="restaurant-cuisine"></p>
+            <p id="restaurant-address"></p>
+          </div>
+        </section>
+        <!-- end restaurant -->
+
+        <!-- Opening hours -->
+        <section id="opening-hours" class="single-opening-hours">
+          <table id="restaurant-hours" class="restaurant-hours">
+            <caption>Opening hours</caption>
+          </table>
+        </section>
+        <!-- End opening hours -->
+    
+        <!-- Beginning map -->
+        <section id="map-container" class="single-map-container">
+          <div id="map"></div>
+        </section>
+        <!-- End map -->
+    
+        <!-- Beginning reviews -->
+        <section id="reviews-container" class="single-reviews-container">
+          <ul id="reviews-list"></ul>
+        </section>
+        <!-- End reviews -->
+
+      </div>
+
     </main>
     <!-- End main -->
   
@@ -71,7 +87,7 @@
   <!-- Main javascript file -->
   <script type="text/javascript" src="js/restaurant_info.js"></script>
   <!-- Google Maps -->
-  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA_tKbW6A5pQ-eupxI56myUnHLqYCzOjKo&libraries=places&callback=initMap"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnTfJwMSTxw4sHOZ8btplUCON_kRsaZmI&libraries=places&callback=initMap"></script>
   <!-- End scripts -->
 
 </body>

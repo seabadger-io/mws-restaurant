@@ -112,12 +112,12 @@ nav h1 a {
 }
 
 #breadcrumb {
-    padding: 10px 40px 16px;
+    padding: 10px 20px 16px;
     list-style: none;
     background-color: #eee;
     font-size: 1.2em;
     margin: 0;
-    width: calc(100% - 80px);
+    width: calc(100% - 40px);
 }
 
 /* Display list items side by side */
@@ -146,7 +146,7 @@ nav h1 a {
 
 /* ====================== Map ====================== */
 #map {
-  height: 400px;
+  height: 300px;
   width: 100%;
   background-color: #ccc;
 }
@@ -255,11 +255,59 @@ nav h1 a {
 }
 
 /* ====================== Restaurant Details ====================== */
-.restaurant-details {
+.single-restaurant {
   width: calc(100% - 20px);
   padding: 0;
   margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
 }
+
+.single-restaurant-details {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.single-restaurant-details h1 {
+  width: 100%;
+}
+
+.restaurant-details-img {
+  width: 100%;
+}
+
+.restaurant-details-text {
+  width: 100%;
+}
+
+.single-opening-hours {
+  width: 100%;
+}
+
+.restaurant-hours {
+  width: 100%;
+  font-size: 1.2em;
+}
+
+.restaurant-hours tr:nth-child(odd) {
+  background-color: #eee;
+}
+
+.restaurant-hours caption {
+  background-color: #444;
+  color: #fff;
+}
+
+.single-map-container {
+  width: 100%;
+}
+
+.single-reviews-container {
+  width: 100%;
+}
+
+/* ===== Breakpoints ===== */
 
 @media screen and (min-width: 400px) {
   .filter-options select {
@@ -277,6 +325,34 @@ nav h1 a {
   .restaurant-summary {
     width: calc(60% - 30px);
   }
+
+  .single-restaurant-details {
+    order: 0;
+  }
+
+  .restaurant-details-img {
+    width: 50%;
+  }
+
+  .restaurant-details-text {
+    width: 50%;
+  }
+
+  .single-opening-hours {
+    width: calc(50% - 10px);
+    order: 2;
+    margin: 0 0 0 10px;
+  }
+
+  .single-map-container {
+    width: 50%;
+    order: 1;
+  }
+
+  .single-reviews-container {
+    order: 3;
+  }
+
 }
 
 @media screen and (min-width: 650px) {
@@ -289,4 +365,5 @@ nav h1 a {
     letter-spacing: 0.05em;
     font-size: 1.8em;
   }
+
 }
