@@ -179,7 +179,7 @@ createRestaurantHTML = (restaurant) => {
   summarydiv.append(name);
 
   const neighborhood = document.createElement('p');
-  neighborhood.className = 'neighborhood';
+  neighborhood.className = 'neighborhood pill-right';
   neighborhood.innerHTML = restaurant.neighborhood;
   summarydiv.append(neighborhood);
 

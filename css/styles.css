@@ -234,7 +234,17 @@ nav h1 a {
   color: #2966B8;
 }
 
-.restaurant-summary .neighborhood {
+/* =============== Restaurant Details/Summary common =============== */
+.address {
+  margin: 0 0 20px;
+  font-size: 1.2em;
+}
+
+.address::before {
+  content: "📌";
+}
+
+.pill-right {
   text-align: center;
   font-size: 1.2em;
   border-radius: 1em;
@@ -243,15 +253,6 @@ nav h1 a {
   min-width: 120px;
   position: relative;
   right: -60%;
-}
-
-.restaurant-summary .address {
-  margin: 0 0 20px;
-  font-size: 1.2em;
-}
-
-.restaurant-summary .address::before {
-  content: "📌";
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -269,20 +270,17 @@ nav h1 a {
   flex-wrap: wrap;
 }
 
-.single-restaurant-details h1 {
-  width: 100%;
-}
-
-.restaurant-details-img {
+.single-restaurant-details h1,
+.restaurant-details-img,
+.single-map-container,
+.single-opening-hours,
+.single-reviews-container {
   width: 100%;
 }
 
 .restaurant-details-text {
-  width: 100%;
-}
-
-.single-opening-hours {
-  width: 100%;
+  padding: 10px;
+  width: calc(100% - 20px);
 }
 
 .restaurant-hours {
@@ -297,14 +295,6 @@ nav h1 a {
 .restaurant-hours caption {
   background-color: #444;
   color: #fff;
-}
-
-.single-map-container {
-  width: 100%;
-}
-
-.single-reviews-container {
-  width: 100%;
 }
 
 /* ===== Breakpoints ===== */
@@ -335,7 +325,7 @@ nav h1 a {
   }
 
   .restaurant-details-text {
-    width: 50%;
+    width: calc(50% - 20px);
   }
 
   .single-opening-hours {
