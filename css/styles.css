@@ -90,6 +90,14 @@ img {
   display: none;
 }
 
+.pill {
+  text-align: center;
+  font-size: 1.2em;
+  border-radius: 1em;
+  border: 1px solid #7f7f7f;
+  padding: 0 1em;
+}
+
 /* ====================== Navigation ====================== */
 nav {
   width: 100%;
@@ -216,14 +224,6 @@ nav h1 a {
   box-shadow: 2px 2px 10px 2px #2966B8;
 }
 
-.restaurant-img {
-  padding: 0;
-  margin: -15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .restaurant-summary {
   padding: 10px;
   display: flex;
@@ -256,12 +256,12 @@ nav h1 a {
   content: "📌";
 }
 
-.pill {
-  text-align: center;
-  font-size: 1.2em;
-  border-radius: 1em;
-  border: 1px solid #7f7f7f;
-  padding: 0 1em;
+.restaurant-img {
+  padding: 0;
+  margin: -15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -287,9 +287,24 @@ nav h1 a {
   width: 100%;
 }
 
+.single-restaurant-details .restaurant-img {
+  margin: 0;
+}
+
 .restaurant-details-text {
+  display: flex;
+  flex-wrap: wrap;
+  flex-flow: column;
   padding: 10px;
   width: calc(100% - 20px);
+}
+
+.cuisine {
+  align-self: flex-end;
+}
+
+.single-opening-hours {
+  margin: 0 0 10px 0;
 }
 
 .restaurant-hours {
@@ -333,24 +348,21 @@ nav h1 a {
   /* === Restaurant Details === */
   .single-restaurant-details {
     order: 0;
-  }
-
-  .restaurant-details-img {
-    width: 50%;
+    margin: 0 0 10px 0;
   }
 
   .restaurant-details-text {
-    width: calc(50% - 20px);
+    flex-basis: calc(50% - 20px);
   }
 
   .single-opening-hours {
-    width: calc(50% - 10px);
+    flex-basis: calc(50% - 10px);
     order: 2;
     margin: 0 0 0 10px;
   }
 
   .single-map-container {
-    width: 50%;
+    flex-basis: 50%;
     order: 1;
   }
 
