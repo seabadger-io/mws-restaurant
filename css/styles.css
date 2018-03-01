@@ -325,7 +325,8 @@ nav h1 a {
   }
 
   .restaurant-summary {
-    flex-basis: calc(50% - 20px);
+    flex-basis: 50%;
+    padding-right: 0;
   }
 
   /* === Restaurant Details === */
