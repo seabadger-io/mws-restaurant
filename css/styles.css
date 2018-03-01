@@ -94,8 +94,9 @@ img {
   text-align: center;
   font-size: 1.2em;
   border-radius: 1em;
-  border: 1px solid #7f7f7f;
   padding: 0 1em;
+  background: linear-gradient(to bottom, rgba(41,102,184,0.7), rgba(41,102,184,1));
+  color: #fff;
 }
 
 /* ====================== Navigation ====================== */
