@@ -166,9 +166,12 @@ createRestaurantHTML = (restaurant) => {
 
   const imgdiv = document.createElement('div');
   imgdiv.className = 'restaurant-img';
-  imgdiv.style = 'background-image: url(' +
-    DBHelper.imageUrlForRestaurant(restaurant) + ');';
 
+  const img = document.createElement('img');
+  img.setAttribute('src', DBHelper.imageUrlForRestaurant(restaurant));
+  img.setAttribute('alt', 'Restaurant ' + restaurant.name);
+
+  imgdiv.append(img);
   li.append(imgdiv);
 
   const summarydiv = document.createElement('div');
@@ -179,7 +182,7 @@ createRestaurantHTML = (restaurant) => {
   summarydiv.append(name);
 
   const neighborhood = document.createElement('p');
-  neighborhood.className = 'neighborhood pill-right';
+  neighborhood.className = 'neighborhood pill';
   neighborhood.innerHTML = restaurant.neighborhood;
   summarydiv.append(neighborhood);
 

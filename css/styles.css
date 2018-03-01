@@ -69,13 +69,12 @@ img {
 
 .button {
   padding: 0.5em 1em;
-  font-size: 1.4em;
+  font-size: 1.2em;
   -webkit-box-shadow: 2px 2px 10px 1px rgba(0,0,0,0.75);
   -moz-box-shadow: 2px 2px 10px 1px rgba(0,0,0,0.75);
   box-shadow: 2px 2px 10px 1px rgba(0,0,0,0.75);
   color: #fff;
   background-color: #2966B8;
-  min-height: 40px;
 }
 
 .button:hover,
@@ -153,7 +152,6 @@ nav h1 a {
 
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
-  width: 100%;
   background-color: #2966B8;
   align-items: center;
   display: flex;
@@ -172,15 +170,17 @@ nav h1 a {
 }
 
 .filter-options select {
+  display: flex;
+  margin: 10px;
+  min-width: 180px;
+  width: 100%;
   background-color: white;
   border: 1px solid #7f7f7f;
   font-family: Arial,sans-serif;
   font-size: 1.4em;
-  height: 35px;
+  height: 2em;
   letter-spacing: 0;
-  margin: 10px;
-  width: calc(100% - 20px);
-  min-width: 180px;
+
 }
 
 .map-toggle {
@@ -205,6 +205,7 @@ nav h1 a {
 .restaurant-container {
   display: flex;
   flex-wrap: wrap;
+  flex-direction: column;
   width: calc(100% - 30px);
   min-height: 250px;
   background-color: #f8f8f8;
@@ -216,15 +217,17 @@ nav h1 a {
 }
 
 .restaurant-img {
+  padding: 0;
   margin: -15px;
-  width: calc(100% + 30px);
-  background-size: cover;
-  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .restaurant-summary {
   padding: 10px;
-  width: calc(100% - 20px);
+  display: flex;
+  flex-flow: column;
 }
 
 .restaurant-summary h1 {
@@ -232,6 +235,14 @@ nav h1 a {
   text-transform: uppercase;
   margin: 10px;
   color: #2966B8;
+}
+
+.restaurant-summary .neighborhood {
+  align-self: flex-end;
+}
+
+.restaurant-summary .button {
+  align-self: flex-end;
 }
 
 /* =============== Restaurant Details/Summary common =============== */
@@ -244,15 +255,12 @@ nav h1 a {
   content: "📌";
 }
 
-.pill-right {
+.pill {
   text-align: center;
   font-size: 1.2em;
   border-radius: 1em;
   border: 1px solid #7f7f7f;
-  width: 40%;
-  min-width: 120px;
-  position: relative;
-  right: -60%;
+  padding: 0 1em;
 }
 
 /* ====================== Restaurant Details ====================== */
@@ -301,21 +309,26 @@ nav h1 a {
 
 @media screen and (min-width: 400px) {
   .filter-options select {
-    width: calc(50% - 20px);
+    flex-basis: calc(50% - 20px);
   }
 }
 
 @media screen and (min-width: 550px) {
+  /* === Restaurant List == */
+  .restaurant-container {
+    flex-direction: row;
+  }
+
   .restaurant-img {
-    width: calc(40% - 30px);
+    flex-basis: 50%;
     margin: -15px 0 -15px -15px;
-    height: auto;
   }
 
   .restaurant-summary {
-    width: calc(60% - 30px);
+    flex-basis: calc(50% - 20px);
   }
 
+  /* === Restaurant Details === */
   .single-restaurant-details {
     order: 0;
   }
