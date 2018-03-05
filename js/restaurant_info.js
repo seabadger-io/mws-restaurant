@@ -14,10 +14,32 @@ window.initMap = () => {
         center: restaurant.latlng,
         scrollwheel: false
       });
+      self.map.addListener('tilesloaded', setMapTitle);
       fillBreadcrumb();
       DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
     }
   });
+};
+
+/**
+ * Set title of map iframe
+ */
+setMapTitle = () => {
+  const mapFrame = document.getElementById('map').querySelector('iframe');
+  mapFrame.setAttribute('title', 'Google maps with restaurant location');
+};
+
+/**
+ * Set inner html and screen reader label of an element
+ */
+setupElementWithLabel = (element, label, text) => {
+  const labelE = document.createElement('span');
+  labelE.className = 'sr-only';
+  labelE.innerHTML = label;
+  element.append(labelE);
+  const textE = document.createTextNode(text);
+  element.append(textE);
+  return element;
 };
 
 /**
@@ -53,14 +75,14 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   name.innerHTML = restaurant.name;
 
   const address = document.getElementById('restaurant-address');
-  address.innerHTML = restaurant.address;
+  setupElementWithLabel(address, 'Address:', restaurant.address);
 
   const image = document.getElementById('restaurant-img');
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
   image.setAttribute('alt', 'Restaurant ' + restaurant.name);
 
   const cuisine = document.getElementById('restaurant-cuisine');
-  cuisine.innerHTML = restaurant.cuisine_type;
+  setupElementWithLabel(cuisine, 'Cuisine:', restaurant.cuisine_type);
 
   // fill operating hours
   if (restaurant.operating_hours) {

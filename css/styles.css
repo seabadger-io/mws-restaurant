@@ -99,6 +99,16 @@ img {
   color: #fff;
 }
 
+.sr-only {
+  visibility: hidden;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  padding: 0;
+  border: 0;
+}
+
 /* ====================== Navigation ====================== */
 nav {
   width: 100%;
@@ -142,7 +152,7 @@ nav h1 a {
 
 /* Add a color to all links inside the list */
 #breadcrumb li a {
-    color: #0275d8;
+    color: #006cc9;
     text-decoration: none;
 }
 

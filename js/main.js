@@ -104,7 +104,16 @@ window.initMap = () => {
     center: loc,
     scrollwheel: false
   });
+  self.map.addListener('tilesloaded', setMapTitle);
   updateRestaurants();
+};
+
+/**
+ * Set title of map iframe
+ */
+setMapTitle = () => {
+  const mapFrame = document.querySelector('#map').querySelector('iframe');
+  mapFrame.setAttribute('title', 'Google maps with restaurant location');
 };
 
 /**
@@ -147,6 +156,19 @@ resetRestaurants = (restaurants) => {
 };
 
 /**
+ * Set inner html and screen reader label of an element
+ */
+setupElementWithLabel = (element, label, text) => {
+  const labelE = document.createElement('span');
+  labelE.className = 'sr-only';
+  labelE.innerHTML = label;
+  element.append(labelE);
+  const textE = document.createTextNode(text);
+  element.append(textE);
+  return element;
+};
+
+/**
  * Create all restaurants HTML and add them to the webpage.
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
@@ -183,13 +205,18 @@ createRestaurantHTML = (restaurant) => {
 
   const neighborhood = document.createElement('p');
   neighborhood.className = 'neighborhood pill';
-  neighborhood.innerHTML = restaurant.neighborhood;
-  summarydiv.append(neighborhood);
+  summarydiv.append(
+    setupElementWithLabel(neighborhood,
+      'Neighborhood:',
+      restaurant.neighborhood
+    )
+  );
 
   const address = document.createElement('p');
   address.className = 'address';
-  address.innerHTML = restaurant.address;
-  summarydiv.append(address);
+  summarydiv.append(
+    setupElementWithLabel(address, 'Address:', restaurant.address)
+  );
 
   const more = document.createElement('a');
   more.innerHTML = 'View Details';
