@@ -6,7 +6,7 @@ const currentCaches = [currentCache, currentImgCache];
 self.addEventListener('fetch', (event) => {
     const requestUrl = new URL(event.request.url);
 
-    if (requestUrl.pathname.startsWith('/img/')) {
+    if (requestUrl.pathname.endsWith('.jpg')) {
         event.respondWith(servePhoto(event.request));
         return;
     }
