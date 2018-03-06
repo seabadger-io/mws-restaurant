@@ -6,12 +6,12 @@ const currentCaches = [currentCache, currentImgCache];
 self.addEventListener('fetch', (event) => {
     const requestUrl = new URL(event.request.url);
 
-    if (requestUrl.pathname.match('/.jpg$/i')) {
+    console.log('Fetch request: ' + requestUrl);
+
+    if (requestUrl.pathname.match(/\.jpg$/i)) {
         event.respondWith(servePhoto(event.request));
         return;
     }
-
-
 
     event.respondWith(
         caches.match(event.request).then((response) => {
