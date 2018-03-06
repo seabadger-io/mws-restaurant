@@ -6,8 +6,6 @@ const currentCaches = [currentCache, currentImgCache];
 self.addEventListener('fetch', (event) => {
     const requestUrl = new URL(event.request.url);
 
-    console.log('Fetch request: ' + requestUrl);
-
     if (requestUrl.pathname.match(/\.jpg$/i)) {
         event.respondWith(servePhoto(event.request));
         return;
@@ -19,7 +17,6 @@ self.addEventListener('fetch', (event) => {
                 return caches.open(currentCache)
                 .then((cache) => {
                     cache.put(event.request, response.clone());
-                    console.log('Storing ' + requestUrl);
                     return response;
                 });
             })
