@@ -1,6 +1,16 @@
-const currentCache = 'mws-restaurant';
+const currentCache = 'mws-static-v1';
+const currentImgCache = 'mws-images-v1';
+
+const currentCaches = [currentCache, currentImgCache];
 
 self.addEventListener('fetch', (event) => {
+    const requestUrl = new URL(event.request.url);
+
+    if (requestUrl.pathname.startsWith('/img/')) {
+        event.respondWith(servePhoto(event.request));
+        return;
+    }
+
     event.respondWith(
         caches.match(event.request).then((response) => {
             return response || fetch(event.request).then((response) => {
@@ -38,3 +48,32 @@ self.addEventListener('install', (event) => {
         })
     );
 });
+
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        caches.keys().then((cacheNames) => {
+            return Promise.all(
+                cacheNames.filter((cacheName) => {
+                    return cacheName.startsWith('mws-') &&
+                        currentCaches.indexOf(cacheName) === -1;
+                }).map((cacheName) => {
+                    return caches.delete(cacheName);
+                })
+            );
+        })
+    );
+});
+
+servePhoto = (request) => {
+    const storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
+
+    return caches.open(currentImgCache).then((cache) => {
+        return cache.match(storageUrl).then((response) => {
+          if (response) return response;
+          return fetch(request).then((networkResponse) => {
+            cache.put(storageUrl, networkResponse.clone());
+            return networkResponse;
+          });
+        });
+    });
+};
