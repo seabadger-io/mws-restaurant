@@ -14,11 +14,15 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
         caches.match(event.request).then((response) => {
             return response || fetch(event.request).then((response) => {
-                return caches.open(currentCache)
-                .then((cache) => {
-                    cache.put(event.request, response.clone());
+                if (response.status === 200) {
+                    return caches.open(currentCache)
+                    .then((cache) => {
+                        cache.put(event.request, response.clone());
+                        return response;
+                    });
+                } else {
                     return response;
-                });
+                }
             })
             .catch((error) => {
                 return new Response(
