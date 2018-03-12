@@ -26,19 +26,17 @@ class DBHelper {
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id, callback) {
-    // fetch all restaurants with proper error handling.
-    DBHelper.fetchRestaurants((error, restaurants) => {
-      if (error) {
-        callback(error, null);
+    fetch(this.DATABASE_URL + '/' + id).then((response) => {
+      if (response.status === 200) {
+        response.json().then((json) => callback(null, json))
+        .catch((error) => callback(error, null));
+      } else if (response.status === 404) {
+        callback('Restaurant does not exist', null);
       } else {
-        const restaurant = restaurants.find((r) => r.id == id);
-        if (restaurant) { // Got the restaurant
-          callback(null, restaurant);
-        } else { // Restaurant does not exist in the database
-          callback('Restaurant does not exist', null);
-        }
+        callback(response.statusText, null);
       }
-    });
+    })
+    .catch((error) => callback(error, null));
   }
 
   /**
