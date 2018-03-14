@@ -173,10 +173,54 @@ setupElementWithLabel = (element, label, text) => {
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
+  const lazy = new lazyLoader();
   restaurants.forEach((restaurant) => {
-    ul.append(createRestaurantHTML(restaurant));
+    const restEntry = createRestaurantHTML(restaurant);
+    if (lazy.isEnabled) {
+      lazy.observeEntry(restEntry);
+    } else {
+      lazyLoader.loadPicture(restEntry);
+    }
+    ul.append(restEntry);
   });
   addMarkersToMap();
+};
+
+/**
+ * Create picture tag for responsive and optimized images
+ */
+createPictureTag = (restaurant) => {
+  const imgBase = DBHelper.imageUrlForRestaurant(restaurant);
+  const pictureTag = document.createElement('picture');
+  const responsiveSet = [
+    {
+      media: '(max-width: 400px)',
+      srcset: ['@400.jpg 1x', '.jpg 2x']
+    },
+    {
+      media: '(max-width: 549px)',
+      srcset: ['@550.jpg 1x', '.jpg 2x']
+    },
+    {
+      media: '(min-width: 550px)',
+      srcset: ['@400.jpg 1x', '.jpg 2x']
+    }
+  ];
+  responsiveSet.forEach((set) => {
+    const sourceTag = document.createElement('data-source');
+    sourceTag.setAttribute('media', set.media);
+    const srcset = [];
+    set.srcset.forEach((img) => {
+      srcset.push(`${imgBase}${img}`);
+    });
+    sourceTag.setAttribute('srcset', srcset.join(', '));
+    pictureTag.append(sourceTag);
+  });
+  const imgTag = document.createElement('img');
+  imgTag.setAttribute('data-src', `${imgBase}@550.jpg`);
+  imgTag.setAttribute('alt', 'Restaurant ' + restaurant.name);
+  pictureTag.append(imgTag);
+  return pictureTag;
 };
 
 /**
@@ -188,12 +232,12 @@ createRestaurantHTML = (restaurant) => {
 
   const imgdiv = document.createElement('div');
   imgdiv.className = 'restaurant-img';
-
+/*
   const img = document.createElement('img');
   img.setAttribute('src', DBHelper.imageUrlForRestaurant(restaurant));
   img.setAttribute('alt', 'Restaurant ' + restaurant.name);
-
-  imgdiv.append(img);
+*/
+  imgdiv.append(createPictureTag(restaurant));
   li.append(imgdiv);
 
   const summarydiv = document.createElement('div');

@@ -3,16 +3,20 @@ const image = require('gulp-image');
 const responsive = require('gulp-responsive');
 const del = require('del');
 
+process.on('unhandledRejection', (up) => {
+  throw up;
+});
+
 gulp.task('image', function () {
   return gulp.src('imgsrc/*.{png,jpg}')
     .pipe(responsive({
       '*.jpg': [
-        { width: 200,
-          rename: { suffix: '@200' }
-        },
         {
           width: 400,
           rename: { suffix: '@400' }
+        },
+        { width: 550,
+          rename: { suffix: '@550' }
         },
         {
           width: 800

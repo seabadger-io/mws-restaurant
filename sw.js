@@ -69,7 +69,7 @@ self.addEventListener('activate', (event) => {
 });
 
 servePhoto = (request) => {
-    const storageUrl = request.url.replace(/-\d+px\.jpg$/, '');
+    const storageUrl = request.url.replace(/\@\d+\.jpg$/, '');
 
     return caches.open(currentImgCache).then((cache) => {
         return cache.match(storageUrl).then((response) => {

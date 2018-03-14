@@ -22,6 +22,7 @@
     "eslint-config-google": "^0.9.1",
     "gulp": "^3.9.1",
     "gulp-image": "^4.3.0",
-    "gulp-responsive": "^2.9.0"
+    "gulp-responsive": "^2.9.0",
+    "sharp": "^0.20.0"
   }
 }
