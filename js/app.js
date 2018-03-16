@@ -9,6 +9,9 @@ if ('serviceWorker' in navigator && false) {
 
 /** 
  * lazyLoader - lazy load entries using callback
+ * @constructor
+ * @param {function} callback: function to handle loading on intersect
+ *  Element is unobserved unless the callback returns false
 */
 class lazyLoader {
   constructor(callback) {
@@ -35,8 +38,9 @@ class lazyLoader {
   onIntersection(observedEntries) {
     observedEntries.forEach((entry) => {
       if (entry.isIntersecting) {
-        this.observer.unobserve(entry.target);
-        this.callback(entry.target);
+        if (this.callback(entry.target) !== false) {
+          this.observer.unobserve(entry.target);
+        }
       }
     });
   };
@@ -51,6 +55,7 @@ class lazyLoader {
     });
     const img = entry.querySelector('img');
     img.setAttribute('src', img.getAttribute('data-src'));
+    return true;
   };
 }
 

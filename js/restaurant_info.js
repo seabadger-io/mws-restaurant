@@ -1,24 +1,48 @@
 let restaurant;
 var map;
 
+document.onreadystatechange = () => {
+  if (document.readyState === 'interactive') {
+    fetchRestaurantFromURL((error) => {
+      if (error) { // Got an error!
+        console.error(error);
+      } else {
+        fillBreadcrumb();
+      }
+    });
+  }
+};
+
+initializeMap = () => {
+  self.map = new google.maps.Map(document.getElementById('map'), {
+    zoom: 16,
+    center: self.restaurant.latlng,
+    scrollwheel: false
+  });
+  self.map.addListener('tilesloaded', setMapTitle);
+  DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+};
+
 /**
- * Initialize Google map, called from HTML.
+ * Add Google map initialization to lazy loader, called from HTML.
  */
 window.initMap = () => {
-  fetchRestaurantFromURL((error, restaurant) => {
-    if (error) { // Got an error!
-      console.error(error);
+  const mapTarget = document.querySelector('#map');
+  const lazy = new lazyLoader(() => {
+    // prevent preloading maps before loading content unless page is scrolled
+    if (document.readyState === 'complete' ||
+    document.documentElement.scrollTop || document.body.scrollTop) {
+      initializeMap();
+      return true;
     } else {
-      self.map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 16,
-        center: restaurant.latlng,
-        scrollwheel: false
-      });
-      self.map.addListener('tilesloaded', setMapTitle);
-      fillBreadcrumb();
-      DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
+      return false;
     }
   });
+  if (lazy.isEnabled()) {
+    lazy.observeEntry(mapTarget);
+  } else {
+    initializeMap();
+  }
 };
 
 /**
