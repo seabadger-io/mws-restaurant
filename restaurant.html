@@ -6,8 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  
   <!-- Normalize.css for better cross-browser consistency -->
   <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css" />
-  <!-- Main CSS file -->
-  <link rel="stylesheet" href="css/styles.css" type="text/css">
+  <style>
+    @charset "utf-8";body,p{font-family:Arial,Helvetica,sans-serif;font-size:0.8em;color:#333;line-height:1.5}body{background-color:#fdfdfd;margin:0;position:relative}a{color:#ffdfc9;text-decoration:none}h1{font-family:Arial,Helvetica,sans-serif;margin:0 0 20px}main{min-height:100%}footer{background-color:#444;color:#b1b1b1;font-size:8pt;letter-spacing:1px;padding:25px;text-align:center;text-transform:uppercase}.container{width:100%;max-width:800px;margin-left:auto;margin-right:auto}.pill{text-align:center;font-size:1.2em;border-radius:1em;padding:0 1em;background:linear-gradient(to bottom,rgba(41,102,184,0.7),rgba(41,102,184,1));color:#fff}nav{width:100%;height:80px;background-color:#252831;text-align:center}nav h1{margin:auto}nav h1 a{color:#fff;font-size:1.4em;font-weight:200;letter-spacing:1px;text-transform:uppercase}#breadcrumb{padding:10px 20px 16px;list-style:none;background-color:#eee;font-size:1.2em;margin:0;width:calc(100% - 40px)}#breadcrumb li{display:inline}#breadcrumb li a{color:#006cc9;text-decoration:none}#map{height:300px;width:100%;background-color:#ccc}.single-restaurant-details h1{font-size:1.6em;text-transform:uppercase;margin:10px;color:#2966b8}.address{margin:0 0 20px;font-size:1.2em;align-self:center}.address::before{content:"📌"}.restaurant-img{padding:0;margin:-15px;display:flex;align-items:center;justify-content:center}.single-restaurant{width:calc(100% - 20px);padding:0;margin:10px;display:flex;flex-wrap:wrap}.single-restaurant-details{width:100%;display:flex;flex-wrap:wrap}.single-restaurant-details h1,.single-map-container,.single-opening-hours,.single-reviews-container{width:100%}.single-restaurant-details .restaurant-img{margin:0}.restaurant-details-text{display:flex;flex-wrap:wrap;flex-flow:column;padding:10px;width:calc(100% - 20px)}.cuisine{align-self:flex-end}.single-opening-hours{margin:0 0 10px 0}.restaurant-hours{width:100%;font-size:1.2em}.restaurant-hours caption{background-color:#444;color:#fff}.single-reviews-container{margin:15px 0 0 0}.reviews-list{display:flex;flex-flow:column;list-style:none;padding:10px;font-size:1.2em}@media screen and (min-width:550px){.restaurant-img{flex-basis:50%;margin:-15px 0 -15px -15px}.single-restaurant-details{order:0;margin:0 0 10px 0}.restaurant-details-text{flex-basis:calc(50% - 20px)}.single-opening-hours{flex-basis:calc(50% - 10px);order:2;margin:0 0 0 10px}.single-map-container{flex-basis:50%;order:1}.single-reviews-container{order:3}}@media screen and (min-width:650px){nav h1 a{font-size:1.8em;letter-spacing:10px}.single-restaurant-details h1{letter-spacing:0.05em;font-size:1.8em}}
+  </style>
+  <noscript>
+    <link rel="stylesheet" href="css/styles.css" type="text/css">
+  </noscript>
   <title>Restaurant Info</title>
 </head>
 
@@ -87,6 +91,12 @@
   </div><!-- .container -->
 
   <!-- Beginning scripts -->
+  <script>
+    const style = document.createElement('link');
+    style.rel = 'stylesheet';
+    style.href = '/css/styles.css';
+    document.getElementsByTagName('head')[0].appendChild(style);
+  </script>
   <!-- Database helpers -->
   <script type="text/javascript" src="js/dbhelper.js"></script>
   <!-- Main javascript file -->
