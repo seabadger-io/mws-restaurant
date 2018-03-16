@@ -173,7 +173,7 @@ setupElementWithLabel = (element, label, text) => {
  */
 fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
-  const lazy = new lazyLoader();
+  const lazy = new lazyLoader(lazyLoader.loadPicture);
   restaurants.forEach((restaurant) => {
     const restEntry = createRestaurantHTML(restaurant);
     if (lazy.isEnabled) {
@@ -232,11 +232,6 @@ createRestaurantHTML = (restaurant) => {
 
   const imgdiv = document.createElement('div');
   imgdiv.className = 'restaurant-img';
-/*
-  const img = document.createElement('img');
-  img.setAttribute('src', DBHelper.imageUrlForRestaurant(restaurant));
-  img.setAttribute('alt', 'Restaurant ' + restaurant.name);
-*/
   imgdiv.append(createPictureTag(restaurant));
   li.append(imgdiv);
 

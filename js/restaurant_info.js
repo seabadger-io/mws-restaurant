@@ -68,6 +68,43 @@ fetchRestaurantFromURL = (callback) => {
 };
 
 /**
+ * Create picture tag for responsive and optimized images
+ */
+createPictureTag = (restaurant) => {
+  const imgBase = DBHelper.imageUrlForRestaurant(restaurant);
+  const pictureTag = document.createElement('picture');
+  const responsiveSet = [
+    {
+      media: '(max-width: 400px)',
+      srcset: ['@400.jpg 1x', '.jpg 2x']
+    },
+    {
+      media: '(max-width: 549px)',
+      srcset: ['@550.jpg 1x', '.jpg 2x']
+    },
+    {
+      media: '(min-width: 550px)',
+      srcset: ['@400.jpg 1x', '.jpg 2x']
+    }
+  ];
+  responsiveSet.forEach((set) => {
+    const sourceTag = document.createElement('source');
+    sourceTag.setAttribute('media', set.media);
+    const srcset = [];
+    set.srcset.forEach((img) => {
+      srcset.push(`${imgBase}${img}`);
+    });
+    sourceTag.setAttribute('srcset', srcset.join(', '));
+    pictureTag.append(sourceTag);
+  });
+  const imgTag = document.createElement('img');
+  imgTag.setAttribute('src', `${imgBase}@550.jpg`);
+  imgTag.setAttribute('alt', 'Restaurant ' + restaurant.name);
+  pictureTag.append(imgTag);
+  return pictureTag;
+};
+
+/**
  * Create restaurant HTML and add it to the webpage
  */
 fillRestaurantHTML = (restaurant = self.restaurant) => {
@@ -78,8 +115,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   setupElementWithLabel(address, 'Address:', restaurant.address);
 
   const image = document.getElementById('restaurant-img');
-  image.src = DBHelper.imageUrlForRestaurant(restaurant);
-  image.setAttribute('alt', 'Restaurant ' + restaurant.name);
+  image.append(createPictureTag(restaurant));
 
   const cuisine = document.getElementById('restaurant-cuisine');
   setupElementWithLabel(cuisine, 'Cuisine:', restaurant.cuisine_type);

@@ -8,16 +8,17 @@ if ('serviceWorker' in navigator && false) {
 }
 
 /** 
- * lazyLoader - load picture tags of HTML elements dynamically
+ * lazyLoader - lazy load entries using callback
 */
 class lazyLoader {
-  constructor() {
+  constructor(callback) {
     if (('IntersectionObserver' in window)) {
       const ioConfig = {
         root: null,
         rootMargin: '0px',
         threshold: 0.01
       };
+      this.callback = callback;
       this.observer = new IntersectionObserver(
         this.onIntersection.bind(this),
         ioConfig
@@ -35,7 +36,7 @@ class lazyLoader {
     observedEntries.forEach((entry) => {
       if (entry.isIntersecting) {
         this.observer.unobserve(entry.target);
-        lazyLoader.loadPicture(entry.target);
+        this.callback(entry.target);
       }
     });
   };
