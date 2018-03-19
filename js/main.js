@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 /**
  * Add event listener to toggle-map link
  */
-initializeMapToggle = () => {
+const initializeMapToggle = () => {
   document.querySelector('#toggle-map').addEventListener('click', (event) => {
     event.preventDefault();
     const map = document.querySelector('#map-container');
@@ -39,7 +39,7 @@ initializeMapToggle = () => {
 /**
  * Fetch all neighborhoods and set their HTML.
  */
-fetchNeighborhoods = () => {
+const fetchNeighborhoods = () => {
   DBHelper.fetchNeighborhoods((error, neighborhoods) => {
     if (error) { // Got an error
       console.error(error);
@@ -53,7 +53,7 @@ fetchNeighborhoods = () => {
 /**
  * Set neighborhoods HTML.
  */
-fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
+const fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
   const select = document.getElementById('neighborhoods-select');
   neighborhoods.forEach((neighborhood) => {
     const option = document.createElement('option');
@@ -66,7 +66,7 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
 /**
  * Fetch all cuisines and set their HTML.
  */
-fetchCuisines = () => {
+const fetchCuisines = () => {
   DBHelper.fetchCuisines((error, cuisines) => {
     if (error) { // Got an error!
       console.error(error);
@@ -80,7 +80,7 @@ fetchCuisines = () => {
 /**
  * Set cuisines HTML.
  */
-fillCuisinesHTML = (cuisines = self.cuisines) => {
+const fillCuisinesHTML = (cuisines = self.cuisines) => {
   const select = document.getElementById('cuisines-select');
 
   cuisines.forEach((cuisine) => {
@@ -111,7 +111,7 @@ window.initMap = () => {
 /**
  * Set title of map iframe
  */
-setMapTitle = () => {
+const setMapTitle = () => {
   const mapFrame = document.querySelector('#map').querySelector('iframe');
   mapFrame.setAttribute('title', 'Google maps with restaurant location');
 };
@@ -119,7 +119,7 @@ setMapTitle = () => {
 /**
  * Update page and map for current restaurants.
  */
-updateRestaurants = () => {
+const updateRestaurants = () => {
   const cSelect = document.getElementById('cuisines-select');
   const nSelect = document.getElementById('neighborhoods-select');
 
@@ -143,7 +143,7 @@ updateRestaurants = () => {
 /**
  * Clear current restaurants, their HTML and remove their map markers.
  */
-resetRestaurants = (restaurants) => {
+const resetRestaurants = (restaurants) => {
   // Remove all restaurants
   self.restaurants = [];
   const ul = document.getElementById('restaurants-list');
@@ -158,7 +158,7 @@ resetRestaurants = (restaurants) => {
 /**
  * Set inner html and screen reader label of an element
  */
-setupElementWithLabel = (element, label, text) => {
+const setupElementWithLabel = (element, label, text) => {
   const labelE = document.createElement('span');
   labelE.className = 'sr-only';
   labelE.innerHTML = label;
@@ -171,7 +171,7 @@ setupElementWithLabel = (element, label, text) => {
 /**
  * Create all restaurants HTML and add them to the webpage.
  */
-fillRestaurantsHTML = (restaurants = self.restaurants) => {
+const fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
   const lazy = new lazyLoader(lazyLoader.loadPicture);
   restaurants.forEach((restaurant) => {
@@ -189,7 +189,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
 /**
  * Create picture tag for responsive and optimized images
  */
-createPictureTag = (restaurant) => {
+const createPictureTag = (restaurant) => {
   const imgBase = DBHelper.imageUrlForRestaurant(restaurant);
   const pictureTag = document.createElement('picture');
   const responsiveSet = [
@@ -226,7 +226,7 @@ createPictureTag = (restaurant) => {
 /**
  * Create restaurant HTML.
  */
-createRestaurantHTML = (restaurant) => {
+const createRestaurantHTML = (restaurant) => {
   const li = document.createElement('li');
   li.className = 'restaurant-container';
 
@@ -272,7 +272,7 @@ createRestaurantHTML = (restaurant) => {
 /**
  * Add markers for current restaurants to the map.
  */
-addMarkersToMap = (restaurants = self.restaurants) => {
+const addMarkersToMap = (restaurants = self.restaurants) => {
   restaurants.forEach((restaurant) => {
     // Add marker to the map
     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);

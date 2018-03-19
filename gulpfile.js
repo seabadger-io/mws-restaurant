@@ -1,14 +1,22 @@
 const gulp = require('gulp');
 const image = require('gulp-image');
 const responsive = require('gulp-responsive');
+const cleancss = require('gulp-clean-css');
+const concat = require('gulp-concat');
+const uglify = require('gulp-uglify');
 const del = require('del');
+const gutil = require('gulp-util');
+const babel = require('gulp-babel');
+const htmlreplace = require('gulp-html-replace');
+const htmlmin = require('gulp-htmlmin');
+const penthouse = require('penthouse');
 
 process.on('unhandledRejection', (up) => {
   throw up;
 });
 
 gulp.task('image', function () {
-  return gulp.src('imgsrc/*.{png,jpg}')
+  return gulp.src('imgsrc/*.jpg')
     .pipe(responsive({
       '*.jpg': [
         {
@@ -23,16 +31,99 @@ gulp.task('image', function () {
         }
       ]
     }))
-    .pipe(image())
-    .pipe(gulp.dest('img'));
+    .pipe(image({
+      jpegRecompress: ['--strip', '--quality', 'medium',
+      '--min', 40, '--max', 60],
+      mozjpeg: ['-optimize', '-progressive']
+    }))
+    .pipe(gulp.dest('dist/img'));
+});
+
+gulp.task('css', () => {
+  return gulp.src('css/styles.css')
+  .pipe(cleancss({}))
+  .pipe(gulp.dest('dist/css'));
+});
+
+gulp.task('mainjs', ['mainhtml'], () =>{
+  return gulp.src(['js/app.js', 'js/dbhelper.js', 'js/main.js'])
+  .pipe(babel({
+    plugins: [
+      ['transform-es2015-arrow-functions', { 'spec': true }]
+    ],
+    presets: ['@babel/env']
+  }))
+  .pipe(concat({ path: 'mainbundle.js', stat: { mode: 0666 } }))
+  .pipe(uglify({}))
+  .on('error', (err) => {
+    gutil.log(gutil.colors.red('[Error]'), err.toString());
+  })
+  .pipe(gulp.dest('dist/js'));
+});
+
+gulp.task('mainhtml', () => {
+  return penthouse({
+    url: 'http://localhost:8000',
+    css: './css/styles.css'
+  })
+  .then((criticalCss) => {
+    return gulp.src('index.html')
+      .pipe(htmlreplace({
+        'js': 'js/mainbundle.js',
+        'criticalCSS': {
+          src: criticalCss,
+          tpl: '<style>%s</style>'
+        }
+      }))
+      .pipe(htmlmin({ collapseWhitespace: true }))
+      .pipe(gulp.dest('dist'));
+  });
+});
+
+gulp.task('detailsjs', ['detailshtml'], () =>{
+  return gulp.src(['js/app.js', 'js/dbhelper.js', 'js/restaurant_info.js'])
+  .pipe(babel({
+    plugins: [
+      ['transform-es2015-arrow-functions', { 'spec': true }]
+    ],
+    presets: ['@babel/env']
+  }))
+  .pipe(concat({ path: 'detailsbundle.js', stat: { mode: 0666 } }))
+  .pipe(uglify({}))
+  .on('error', (err) => {
+    gutil.log(gutil.colors.red('[Error]'), err.toString());
+  })
+  .pipe(gulp.dest('dist/js'));
+});
+
+gulp.task('detailshtml', () => {
+  return penthouse({
+    url: 'http://localhost:8000/restaurant.html?id=1',
+    css: './css/styles.css'
+  })
+  .then((criticalCss) => {
+    return gulp.src('restaurant.html')
+      .pipe(htmlreplace({
+        'js': 'js/detailsbundle.js',
+        'criticalCSS': {
+          src: criticalCss,
+          tpl: '<style>%s</style>'
+        }
+      }))
+      .pipe(htmlmin({ collapseWhitespace: true }))
+      .pipe(gulp.dest('dist'));
+  });
 });
 
 gulp.task('clean', function () {
   return del([
-    'img'
+    'dist'
   ]);
 });
 
 gulp.task('default', ['clean'], function () {
   gulp.start('image');
+  gulp.start('mainjs');
+  gulp.start('detailsjs');
+  gulp.start('css');
 });

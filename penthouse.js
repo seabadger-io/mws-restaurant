@@ -10,9 +10,9 @@ penthouse({
 });
 
 penthouse({
-    url: 'http://localhost:8000/restaurant.html?id=1',
-    css: './css/styles.css'
-  })
-  .then((criticalCss) => {
-    fs.writeFileSync('./css/critical-detail.css', criticalCss);
-  });
+  url: 'http://localhost:8000/restaurant.html?id=1',
+  css: './css/styles.css'
+})
+.then((criticalCss) => {
+  fs.writeFileSync('./css/critical-detail.css', criticalCss);
+});
