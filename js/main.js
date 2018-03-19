@@ -4,6 +4,13 @@ let cuisines;
 var map;
 var markers = [];
 
+document.onreadystatechange = () => {
+  if (document.readyState === 'interactive') {
+    updateRestaurants();
+  }
+};
+
+
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -28,6 +35,9 @@ const initializeMapToggle = () => {
     if (event.target.dataset.show === 'false') {
       event.target.innerHTML = 'Hide results map';
       event.target.dataset.show = 'true';
+      if (self.markers.length == 0) {
+        addMarkersToMap();
+      }
     } else {
       event.target.innerHTML = 'Show results on map';
       event.target.dataset.show = 'false';
@@ -105,7 +115,6 @@ window.initMap = () => {
     scrollwheel: false
   });
   self.map.addListener('tilesloaded', setMapTitle);
-  updateRestaurants();
 };
 
 /**
@@ -273,6 +282,9 @@ const createRestaurantHTML = (restaurant) => {
  * Add markers for current restaurants to the map.
  */
 const addMarkersToMap = (restaurants = self.restaurants) => {
+  if (typeof google === 'undefined') {
+    return;
+  }
   restaurants.forEach((restaurant) => {
     // Add marker to the map
     const marker = DBHelper.mapMarkerForRestaurant(restaurant, self.map);
