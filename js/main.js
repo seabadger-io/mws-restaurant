@@ -34,6 +34,13 @@ const initializeMapToggle = () => {
     if (event.target.dataset.show === 'false') {
       event.target.innerHTML = 'Hide results map';
       event.target.dataset.show = 'true';
+      const ms = document.querySelector('#mapScript');
+      if (null === ms) {
+        const addMs = document.createElement('script');
+        addMs.id = 'mapScript';
+        addMs.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCWYfWK4x2AWzzNW1B6YqeMg9JRmBRBygU&libraries=places&callback=initMap';
+        document.querySelector('head').append(addMs);
+      }
       if (self.markers.length == 0) {
         addMarkersToMap();
       }
@@ -114,6 +121,7 @@ window.initMap = () => {
     scrollwheel: false
   });
   self.map.addListener('tilesloaded', setMapTitle);
+  addMarkersToMap();
 };
 
 /**
