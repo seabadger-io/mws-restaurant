@@ -27,12 +27,13 @@ const initializeMap = () => {
  * Add Google map initialization to lazy loader, called from HTML.
  */
 window.initMap = () => {
-  const mapTarget = document.querySelector('#map');
+  const mapTarget = document.querySelector('#map-container');
   const lazy = new lazyLoader(() => {
     // prevent preloading maps before loading content unless page is scrolled
     if (document.readyState === 'complete' ||
     document.documentElement.scrollTop || document.body.scrollTop) {
       initializeMap();
+      mapTarget.querySelector('#map').classList.remove('hidden');
       return true;
     } else {
       return false;
@@ -42,6 +43,7 @@ window.initMap = () => {
     lazy.observeEntry(mapTarget);
   } else {
     initializeMap();
+    mapTarget.querySelector('#map').classList.remove('hidden');
   }
 };
 

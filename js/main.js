@@ -10,7 +10,6 @@ document.onreadystatechange = () => {
   }
 };
 
-
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
