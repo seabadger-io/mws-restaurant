@@ -105,11 +105,11 @@ const createPictureTag = (restaurant) => {
       srcset: ['@400.jpg 1x', '.jpg 2x']
     },
     {
-      media: '(max-width: 549px)',
+      media: '(max-width: 499px)',
       srcset: ['@550.jpg 1x', '.jpg 2x']
     },
     {
-      media: '(min-width: 550px)',
+      media: '(min-width: 500px)',
       srcset: ['@400.jpg 1x', '.jpg 2x']
     }
   ];
