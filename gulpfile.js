@@ -45,8 +45,23 @@ gulp.task('css', () => {
   .pipe(gulp.dest('dist/css'));
 });
 
-gulp.task('mainjs', ['mainhtml'], () =>{
-  return gulp.src(['js/app.js', 'js/dbhelper.js', 'js/main.js'])
+gulp.task('sw', () => {
+  return gulp.src('sw.js')
+  .pipe(babel({
+    plugins: [
+      ['transform-es2015-arrow-functions', { 'spec': true }]
+    ],
+    presets: ['@babel/env']
+  }))
+  .pipe(uglify({}))
+  .on('error', (err) => {
+    gutil.log(gutil.colors.red('[Error]'), err.toString());
+  })
+  .pipe(gulp.dest('dist/'));
+});
+
+gulp.task('mainjs', ['mainhtml', 'sw'], () =>{
+  return gulp.src(['node_modules/idb/lib/idb.js', 'js/app.js', 'js/dbhelper.js', 'js/main.js'])
   .pipe(babel({
     plugins: [
       ['transform-es2015-arrow-functions', { 'spec': true }]
@@ -81,7 +96,7 @@ gulp.task('mainhtml', () => {
 });
 
 gulp.task('detailsjs', ['detailshtml'], () =>{
-  return gulp.src(['js/app.js', 'js/dbhelper.js', 'js/restaurant_info.js'])
+  return gulp.src(['node_modules/idb/lib/idb.js', 'js/app.js', 'js/dbhelper.js', 'js/restaurant_info.js'])
   .pipe(babel({
     plugins: [
       ['transform-es2015-arrow-functions', { 'spec': true }]
@@ -116,7 +131,7 @@ gulp.task('detailshtml', () => {
 });
 
 gulp.task('clean', function () {
-  return del([
+  return del.sync([
     'dist'
   ]);
 });
