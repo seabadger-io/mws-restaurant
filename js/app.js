@@ -1,4 +1,4 @@
-if ('serviceWorker' in navigator && false) {
+if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js', { scope: '/' })
     .then((reg) => {
       console.log('SW Registration successful. Scope is ' + reg.scope);
@@ -8,12 +8,12 @@ if ('serviceWorker' in navigator && false) {
 }
 
 /** 
- * lazyLoader - lazy load entries using callback
+ * LazyLoader - lazy load entries using callback
  * @constructor
  * @param {function} callback: function to handle loading on intersect
  *  Element is unobserved unless the callback returns false
 */
-class lazyLoader {
+class LazyLoader {
   constructor(callback) {
     if (('IntersectionObserver' in window)) {
       const ioConfig = {
@@ -59,3 +59,53 @@ class lazyLoader {
   };
 }
 
+/** IDB cache
+ * Wrapper object to store and retrieve objects based on id from IndexedDB
+*/
+class ObjectCache {
+  constructor(cachename) {
+    this.cachename = cachename;
+    this.openDb();
+  }
+
+  openDb() {
+    this.cache = idb.open(this.cachename, 1, (upgradeDb) => {
+      switch (upgradeDb.oldVersion) {
+        case 0:
+          const store = upgradeDb.createObjectStore('cache', {
+            keyPath: 'id'
+          });
+          store.createIndex('by-id', 'id');
+      }
+    });
+  }
+
+  getAll() {
+    return this.cache.then((db) => {
+      return db.transaction('cache')
+        .objectStore('cache').index('by-id')
+        .getAll();
+    });
+  }
+
+  get(id) {
+    return this.cache.then((db) => {
+      return db.transaction('cache')
+        .objectStore('cache').get(id);
+    });
+  }
+
+  putAll(objects) {
+    this.cache.then((db) => {
+      const tx = db.transaction('cache', 'readwrite');
+      const store = tx.objectStore('cache');
+      objects.forEach((object) => {
+        store.put(object);
+      });
+    });
+  }
+
+  put(object) {
+    this.putAll([object]);
+  }
+}

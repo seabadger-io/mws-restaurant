@@ -189,13 +189,13 @@ const setupElementWithLabel = (element, label, text) => {
  */
 const fillRestaurantsHTML = (restaurants = self.restaurants) => {
   const ul = document.getElementById('restaurants-list');
-  const lazy = new lazyLoader(lazyLoader.loadPicture);
+  const lazy = new LazyLoader(LazyLoader.loadPicture);
   restaurants.forEach((restaurant) => {
     const restEntry = createRestaurantHTML(restaurant);
     if (lazy.isEnabled) {
       lazy.observeEntry(restEntry);
     } else {
-      lazyLoader.loadPicture(restEntry);
+      LazyLoader.loadPicture(restEntry);
     }
     ul.append(restEntry);
   });

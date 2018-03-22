@@ -28,7 +28,7 @@ const initializeMap = () => {
  */
 window.initMap = () => {
   const mapTarget = document.querySelector('#map-container');
-  const lazy = new lazyLoader(() => {
+  const lazy = new LazyLoader(() => {
     // prevent preloading maps before loading content unless page is scrolled
     if (document.readyState === 'complete' ||
     document.documentElement.scrollTop || document.body.scrollTop) {

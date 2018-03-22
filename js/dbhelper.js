@@ -1,6 +1,8 @@
 /**
  * Common database helper functions.
  */
+const cache = new ObjectCache('restaurants');
+
 class DBHelper {
   /**
    * Database URL.
@@ -15,28 +17,54 @@ class DBHelper {
    * Fetch all restaurants.
    */
   static fetchRestaurants(callback) {
-    fetch(this.DATABASE_URL).then((response) => {
-      response.json().then((json) => callback(null, json))
+    let gotFromCache = false;
+    cache.getAll().then((objects) => {
+      if (objects.length >= 3) {
+        gotFromCache = true;
+        callback(null, objects);
+      }
+      if (gotFromCache) {
+        callback = () => {};
+      }
+      fetch(this.DATABASE_URL).then((response) => {
+        response.json().then((json) => {
+          callback(null, json);
+          cache.putAll(json);
+        })
+        .catch((error) => callback(error, null));
+      })
       .catch((error) => callback(error, null));
-    })
-    .catch((error) => callback(error, null));
+    });
   }
 
   /**
    * Fetch a restaurant by its ID.
    */
   static fetchRestaurantById(id, callback) {
-    fetch(this.DATABASE_URL + '/' + id).then((response) => {
-      if (response.status === 200) {
-        response.json().then((json) => callback(null, json))
-        .catch((error) => callback(error, null));
-      } else if (response.status === 404) {
-        callback('Restaurant does not exist', null);
-      } else {
-        callback(response.statusText, null);
+    let gotFromCache = false;
+    cache.get(parseInt(id)).then((object) => {
+      if (typeof object === 'object') {
+        gotFromCache = true;
+        callback(null, object);
       }
-    })
-    .catch((error) => callback(error, null));
+      if (gotFromCache) {
+        callback = () => {};
+      }
+      fetch(this.DATABASE_URL + '/' + id).then((response) => {
+        if (response.status === 200) {
+          response.json().then((json) => {
+            callback(null, json);
+            cache.put(json);
+          })
+          .catch((error) => callback(error, null));
+        } else if (response.status === 404) {
+          callback('Restaurant does not exist', null);
+        } else {
+          callback(response.statusText, null);
+        }
+      })
+      .catch((error) => callback(error, null));
+    });
   }
 
   /**
