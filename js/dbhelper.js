@@ -19,7 +19,7 @@ class DBHelper {
   static fetchRestaurants(callback) {
     let gotFromCache = false;
     cache.getAll().then((objects) => {
-      if (objects.length >= 3) {
+      if (objects.length >= 10) {
         gotFromCache = true;
         callback(null, objects);
       }
