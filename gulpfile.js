@@ -16,7 +16,7 @@ process.on('unhandledRejection', (up) => {
 });
 
 gulp.task('image', function () {
-  return gulp.src('imgsrc/*.jpg')
+  return gulp.src('img/*.jpg')
     .pipe(responsive({
       '*.jpg': [
         {
