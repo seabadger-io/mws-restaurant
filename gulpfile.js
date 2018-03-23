@@ -15,7 +15,7 @@ process.on('unhandledRejection', (up) => {
   throw up;
 });
 
-gulp.task('image', function () {
+gulp.task('image', () => {
   return gulp.src('img/*.jpg')
     .pipe(responsive({
       '*.jpg': [
@@ -33,10 +33,43 @@ gulp.task('image', function () {
     }))
     .pipe(image({
       jpegRecompress: ['--strip', '--quality', 'medium',
-      '--min', 40, '--max', 60],
+      '--target', 40, '--min', 30, '--max', 60],
       mozjpeg: ['-optimize', '-progressive']
     }))
     .pipe(gulp.dest('dist/img'));
+});
+
+gulp.task('logo', () => {
+  return gulp.src('img/launcher-icon.png')
+    .pipe(responsive({
+      '*.png': [
+        {
+          width: 48,
+          rename: { suffix: '@48' }
+        },
+        {
+          width: 96,
+          rename: { suffix: '@96' }
+        },
+        {
+          width: 192,
+          rename: { suffix: '@192' }
+        },
+        {
+          width: 512,
+          rename: { suffix: '@512' }
+        }
+      ]
+    }))
+    .pipe(image({
+      optipng: ['-i 1', '-strip all', '-fix', '-o7', '-force']
+    }))
+    .pipe(gulp.dest('dist/img'));
+});
+
+gulp.task('manifest', ['logo'], () => {
+  return gulp.src('manifest.json')
+    .pipe(gulp.dest('dist'));
 });
 
 gulp.task('css', () => {
@@ -60,7 +93,7 @@ gulp.task('sw', () => {
   .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('mainjs', ['mainhtml', 'sw'], () =>{
+gulp.task('mainjs', ['mainhtml', 'sw', 'manifest'], () =>{
   return gulp.src(['node_modules/idb/lib/idb.js', 'js/app.js', 'js/dbhelper.js', 'js/main.js'])
   .pipe(babel({
     plugins: [
