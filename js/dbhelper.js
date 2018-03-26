@@ -14,7 +14,24 @@ class DBHelper {
   }
 
   /**
-   * Fetch all restaurants.
+   * Get all restaurants from cache without fetch and cache update
+   * Wait until cache is populated
+   */
+  static getRestaurants(callback, timeout = 200) {
+    cache.getAll().then((objects) => {
+      if (objects.length < 10) {
+        setTimeout(this.getRestaurants(callback, timeout * 2), timeout);
+      } else {
+        callback(null, objects);
+      }
+    })
+    .catch(() => {
+      this.fetchRestaurants(callback);
+    });
+  }
+
+  /**
+   * Fetch all restaurants and update cache
    */
   static fetchRestaurants(callback) {
     let gotFromCache = false;
@@ -129,7 +146,7 @@ class DBHelper {
    */
   static fetchNeighborhoods(callback) {
     // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
+    DBHelper.getRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
@@ -151,7 +168,7 @@ class DBHelper {
    */
   static fetchCuisines(callback) {
     // Fetch all restaurants
-    DBHelper.fetchRestaurants((error, restaurants) => {
+    DBHelper.getRestaurants((error, restaurants) => {
       if (error) {
         callback(error, null);
       } else {
