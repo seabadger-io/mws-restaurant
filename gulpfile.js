@@ -73,7 +73,7 @@ gulp.task('manifest', ['logo'], () => {
 });
 
 gulp.task('css', () => {
-  return gulp.src('css/styles.css')
+  return gulp.src(['css/mainstyles.css', 'css/detailsstyles.css'])
   .pipe(cleancss({}))
   .pipe(gulp.dest('dist/css'));
 });
@@ -112,7 +112,7 @@ gulp.task('mainjs', ['mainhtml', 'sw', 'manifest'], () =>{
 gulp.task('mainhtml', () => {
   return penthouse({
     url: 'http://localhost:8000',
-    css: './css/styles.css'
+    css: './css/mainstyles.css'
   })
   .then((criticalCss) => {
     return gulp.src('index.html')
@@ -147,7 +147,7 @@ gulp.task('detailsjs', ['detailshtml'], () =>{
 gulp.task('detailshtml', () => {
   return penthouse({
     url: 'http://localhost:8000/restaurant.html?id=1',
-    css: './css/styles.css'
+    css: './css/detailsstyles.css'
   })
   .then((criticalCss) => {
     return gulp.src('restaurant.html')

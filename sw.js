@@ -44,14 +44,12 @@ self.addEventListener('fetch', (event) => {
 self.addEventListener('install', (event) => {
   const cachedUrls = [
     '/',
-    '/js/app.js',
-    '/js/main.js',
-    '/js/restaurant_info.js',
-    '/js/dbhelper.js',
-    '/data/restaurant.json',
+    '/js/mainbundle.js',
+    '/js/detailsbundle.js',
     '/restaurant.html',
     '/index.html',
-    '/css/styles.css'
+    '/css/mainstyles.css',
+    '/css/detailsstyles.css'
   ];
   event.waitUntil(
     caches.open(currentCache).then((cache) => {
