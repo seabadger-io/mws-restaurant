@@ -179,9 +179,13 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
  */
 const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
   const container = document.getElementById('reviews-container');
+  const anchor = document.createElement('a');
+  anchor.name='reviews';
   const title = document.createElement('h3');
+  title.setAttribute('tabindex', '1');
   title.innerHTML = 'Reviews';
-  container.appendChild(title);
+  anchor.appendChild(title);
+  container.appendChild(anchor);
 
   if (!reviews) {
     const noReviews = document.createElement('p');

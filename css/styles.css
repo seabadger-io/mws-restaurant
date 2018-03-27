@@ -351,6 +351,11 @@ nav h1 a {
   margin: 15px 0 0 0;
 }
 
+.single-reviews-container a,
+.single-reviews-container a:visited {
+  color: #000;
+}
+
 /* === Restaurant Reviews === */
 .reviews-list {
   display: flex;

@@ -44,7 +44,7 @@
         <!-- Beginning restaurant -->
         <section id="restaurant-container" class="single-restaurant-details"
         role="region" label="Restaurant details">
-          <h2 id="restaurant-name"></h2>
+          <h2 id="restaurant-name" tabindex="1"></h2>
           <div class="restaurant-img" id="restaurant-img">
           </div>
           <div class="restaurant-details-text">
@@ -58,12 +58,13 @@
         <section id="opening-hours" class="single-opening-hours"
         role="region" label="Restaurant opening hours">
           <table id="restaurant-hours" class="restaurant-hours">
-            <caption>Opening hours</caption>
+            <caption tabindex="1">Opening hours</caption>
           </table>
         </section>
         <!-- End opening hours -->
     
         <!-- Beginning map -->
+        <a href="#reviews" class="sr-only">Skip maps and jump to reviews</a>
         <section id="map-container" class="single-map-container"
         role="application" label="Map showing restaurant location">
           <div id="map" class="hidden"></div>
