@@ -6,8 +6,8 @@ const currentCaches = [currentCache, currentImgCache];
 self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
 
-  /* restaurant objects are cached by dbhelper in IndexedDB */
-  if (requestUrl.pathname.match('^\/restaurants')) {
+  /* some objects are cached by dbhelper in IndexedDB */
+  if (requestUrl.pathname.match('^\/(restaurants|reviews)')) {
     return;
   }
 

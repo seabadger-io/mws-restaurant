@@ -56,11 +56,9 @@ class DBHelper {
   static fetchReviews(restaurantId, callback) {
     reviewsCache.getAll().then((objects) => {
       if (objects.length >= 1) {
-        const reviews = objects.map((el) => {
-          if (el['restaurant_id'] == restaurantId) {
-            return el;
-          }
-        });
+        const reviews = objects.filter(
+          (el) => el['restaurant_id'] == restaurantId
+        );
         if (reviews.length > 0) {
           callback(null, reviews);
           callback = () => {}; // don't repeat callback on fetch
