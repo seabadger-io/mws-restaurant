@@ -1,7 +1,8 @@
 /**
  * Common database helper functions.
  */
-const cache = new ObjectCache('restaurants');
+const restaurantsCache = new ObjectCache('restaurants');
+const reviewsCache = new ObjectCache('reviews');
 
 class DBHelper {
   /**
@@ -9,8 +10,7 @@ class DBHelper {
    * Change this to restaurants.json file location on your server.
    */
   static get DATABASE_URL() {
-    const port = 1337; // Change this to your server port
-    return `http://localhost:${port}/restaurants`;
+    return 'http://localhost:1337';
   }
 
   /**
@@ -18,7 +18,7 @@ class DBHelper {
    * Wait until cache is populated
    */
   static getRestaurants(callback, timeout = 200) {
-    cache.getAll().then((objects) => {
+    restaurantsCache.getAll().then((objects) => {
       if (objects.length < 10) {
         setTimeout(this.getRestaurants(callback, timeout * 2), timeout);
       } else {
@@ -34,19 +34,43 @@ class DBHelper {
    * Fetch all restaurants and update cache
    */
   static fetchRestaurants(callback) {
-    let gotFromCache = false;
-    cache.getAll().then((objects) => {
+    restaurantsCache.getAll().then((objects) => {
       if (objects.length >= 10) {
-        gotFromCache = true;
         callback(null, objects);
+        callback = () => {}; // don't call callback again from fetch
       }
-      if (gotFromCache) {
-        callback = () => {};
-      }
-      fetch(this.DATABASE_URL).then((response) => {
+      fetch(this.DATABASE_URL + '/restaurants').then((response) => {
         response.json().then((json) => {
           callback(null, json);
-          cache.putAll(json);
+          restaurantsCache.putAll(json);
+        })
+        .catch((error) => callback(error, null));
+      })
+      .catch((error) => callback(error, null));
+    });
+  }
+
+  /**
+   * Fetch all reviews and update cache
+   */
+  static fetchReviews(restaurantId, callback) {
+    reviewsCache.getAll().then((objects) => {
+      if (objects.length >= 1) {
+        const reviews = objects.map((el) => {
+          if (el['restaurant_id'] == restaurantId) {
+            return el;
+          }
+        });
+        if (reviews.length > 0) {
+          callback(null, reviews);
+          callback = () => {}; // don't repeat callback on fetch
+        }
+      }
+      fetch(this.DATABASE_URL + '/reviews/?restaurant_id=' + restaurantId)
+      .then((response) => {
+        response.json().then((json) => {
+          callback(null, json);
+          reviewsCache.putAll(json);
         })
         .catch((error) => callback(error, null));
       })
@@ -59,7 +83,7 @@ class DBHelper {
    */
   static fetchRestaurantById(id, callback) {
     let gotFromCache = false;
-    cache.get(parseInt(id)).then((object) => {
+    restaurantsCache.get(parseInt(id)).then((object) => {
       if (typeof object === 'object') {
         gotFromCache = true;
         callback(null, object);
@@ -67,11 +91,11 @@ class DBHelper {
       if (gotFromCache) {
         callback = () => {};
       }
-      fetch(this.DATABASE_URL + '/' + id).then((response) => {
+      fetch(this.DATABASE_URL + '/restaurants/' + id).then((response) => {
         if (response.status === 200) {
           response.json().then((json) => {
             callback(null, json);
-            cache.put(json);
+            restaurantsCache.put(json);
           })
           .catch((error) => callback(error, null));
         } else if (response.status === 404) {

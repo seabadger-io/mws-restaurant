@@ -151,7 +151,13 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
     fillRestaurantHoursHTML();
   }
   // fill reviews
-  fillReviewsHTML();
+  DBHelper.fetchReviews(self.restaurant.id, (error, reviews) => {
+    if (error) {
+      console.log('Failed to fetch reviews:', error);
+    } else {
+      fillReviewsHTML(reviews);
+    }
+  });
 };
 
 /**
@@ -215,7 +221,8 @@ const createReviewHTML = (review) => {
   head.appendChild(name);
 
   const date = document.createElement('p');
-  date.innerHTML = review.date;
+  const createdAt = new Date(review.createdAt);
+  date.innerHTML = createdAt.toDateString();
   date.class = 'review-date';
   head.appendChild(date);
 
