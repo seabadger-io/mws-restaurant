@@ -3,7 +3,7 @@
 #### _Three Stage Course Material Project - Restaurant Reviews_
 
 ## Project Overview
-This is my certification project for the Udacity Mobile Web Specialist Nanodegree program. The course focusing on mobile first responsive web design, offline first solutions using ServiceWorker and different caching methods, accessibility and performance. No third party JS or CSS libraries can be used.
+This is my certification project for the Udacity Mobile Web Specialist Nanodegree program. The course is focusing on mobile first responsive web design, offline first solutions using ServiceWorker and different caching methods, accessibility and performance. No third party JS or CSS libraries can be used.
 
 ## A little more about this project
 This course and the project only covers the frontend part. Starting from a non-responsive, low-performing, online-only website which lacks accessibility, the target is a Progressive Web Application reaching at least 90 points on each Lighthouse tests. During the process I have also added some build automatization.
