@@ -255,6 +255,16 @@ nav h1 a {
   justify-content: center;
 }
 
+.favorite-toggle[aria-checked="true"]::after {
+  content: "★ ";
+  color: #da0;
+}
+
+.favorite-toggle[aria-checked="false"]::after {
+  content: "☆ ";
+  color: #000;
+}
+
 /* ===== Breakpoints ===== */
 
 @media screen and (min-width: 400px) {

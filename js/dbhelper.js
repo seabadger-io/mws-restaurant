@@ -232,4 +232,14 @@ class DBHelper {
     );
     return marker;
   }
+
+  /**
+   * Toggle favorite
+   */
+  static toggleRestaurantFavorite(id, favorite) {
+    return fetch(DBHelper.DATABASE_URL +
+      `/restaurants/${id}/?is_favorite=${favorite}`,
+      { method: 'PUT'}
+    );
+  }
 }

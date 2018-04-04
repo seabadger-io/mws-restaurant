@@ -10,6 +10,7 @@ const babel = require('gulp-babel');
 const htmlreplace = require('gulp-html-replace');
 const htmlmin = require('gulp-htmlmin');
 const penthouse = require('penthouse');
+const sourcemaps = require('gulp-sourcemaps');
 
 process.on('unhandledRejection', (up) => {
   throw up;
@@ -80,6 +81,7 @@ gulp.task('css', () => {
 
 gulp.task('sw', () => {
   return gulp.src('sw.js')
+  .pipe(sourcemaps.init())
   .pipe(babel({
     plugins: [
       ['transform-es2015-arrow-functions', { 'spec': true }]
@@ -87,6 +89,7 @@ gulp.task('sw', () => {
     presets: ['@babel/env']
   }))
   .pipe(uglify({}))
+  .pipe(sourcemaps.write())
   .on('error', (err) => {
     gutil.log(gutil.colors.red('[Error]'), err.toString());
   })
@@ -95,6 +98,7 @@ gulp.task('sw', () => {
 
 gulp.task('mainjs', ['mainhtml', 'sw', 'manifest'], () =>{
   return gulp.src(['node_modules/idb/lib/idb.js', 'js/app.js', 'js/dbhelper.js', 'js/main.js'])
+  .pipe(sourcemaps.init())
   .pipe(babel({
     plugins: [
       ['transform-es2015-arrow-functions', { 'spec': true }]
@@ -103,6 +107,7 @@ gulp.task('mainjs', ['mainhtml', 'sw', 'manifest'], () =>{
   }))
   .pipe(concat({ path: 'mainbundle.js', stat: { mode: 0666 } }))
   .pipe(uglify({}))
+  .pipe(sourcemaps.write())
   .on('error', (err) => {
     gutil.log(gutil.colors.red('[Error]'), err.toString());
   })
@@ -130,6 +135,7 @@ gulp.task('mainhtml', () => {
 
 gulp.task('detailsjs', ['detailshtml'], () =>{
   return gulp.src(['node_modules/idb/lib/idb.js', 'js/app.js', 'js/dbhelper.js', 'js/restaurant_info.js'])
+  .pipe(sourcemaps.init())
   .pipe(babel({
     plugins: [
       ['transform-es2015-arrow-functions', { 'spec': true }]
@@ -138,6 +144,7 @@ gulp.task('detailsjs', ['detailshtml'], () =>{
   }))
   .pipe(concat({ path: 'detailsbundle.js', stat: { mode: 0666 } }))
   .pipe(uglify({}))
+  .pipe(sourcemaps.write())
   .on('error', (err) => {
     gutil.log(gutil.colors.red('[Error]'), err.toString());
   })

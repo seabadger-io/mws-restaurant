@@ -273,3 +273,31 @@ const getParameterByName = (name, url) => {
   }
   return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
+
+const createFavoriteToggle = (restaurant) => {
+  const button = document.createElement('a');
+  button.href='#';
+  button.className = 'favorite-toggle';
+  button.setAttribute('data-restaurant-id', restaurant.id);
+  button.setAttribute('role', 'switch');
+  const check = restaurant.is_favorite === 'true' ? 'true' : 'false';
+  button.setAttribute('aria-checked', check);
+  button.setAttribute('title', 'Toggle favorite status of ' +
+  restaurant.name);
+  button.setAttribute('aria-label', 'Toggle favorite status of ' +
+  restaurant.name);
+  button.addEventListener('click', toggleFavoriteHandler);
+  return button;
+};
+
+const toggleFavoriteHandler = (event) => {
+  const target = event.currentTarget;
+  const rId = target.getAttribute('data-restaurant-id');
+  const check = target.getAttribute('aria-checked') === 'false'
+  ? 'true' : 'false';
+  DBHelper.toggleRestaurantFavorite(rId, check)
+  .then(() => {
+    target.setAttribute('aria-checked', check);
+  });
+  event.preventDefault();
+};

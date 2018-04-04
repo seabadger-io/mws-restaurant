@@ -63,17 +63,18 @@ class LazyLoader {
  * Wrapper object to store and retrieve objects based on id from IndexedDB
 */
 class ObjectCache {
-  constructor(cachename) {
+  constructor(cachename, autoIncrement = false) {
     this.cachename = cachename;
-    this.openDb();
+    this.openDb(autoIncrement);
   }
 
-  openDb() {
+  openDb(autoIncrement = false) {
     this.cache = idb.open(this.cachename, 1, (upgradeDb) => {
       switch (upgradeDb.oldVersion) {
         case 0:
           const store = upgradeDb.createObjectStore('cache', {
-            keyPath: 'id'
+            keyPath: 'id',
+            autoIncrement: autoIncrement
           });
           store.createIndex('by-id', 'id');
       }
@@ -107,5 +108,13 @@ class ObjectCache {
 
   put(object) {
     this.putAll([object]);
+  }
+
+  delete(id) {
+    this.cache.then((db) => {
+      const tx = db.transaction('cache', 'readwrite');
+      const store = tx.objectStore('cache');
+      store.delete(id);
+    });
   }
 }

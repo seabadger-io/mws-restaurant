@@ -32,6 +32,7 @@
     "gulp-html-replace": "^1.6.2",
     "gulp-image": "^4.3.0",
     "gulp-responsive": "^2.9.0",
+    "gulp-sourcemaps": "^2.6.4",
     "gulp-uglify": "^3.0.0",
     "gulp-util": "^3.0.8",
     "idb": "^2.1.1",
