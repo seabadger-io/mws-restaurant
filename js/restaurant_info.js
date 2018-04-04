@@ -134,8 +134,10 @@ const createPictureTag = (restaurant) => {
  * Create restaurant HTML and add it to the webpage
  */
 const fillRestaurantHTML = (restaurant = self.restaurant) => {
-  const name = document.getElementById('restaurant-name');
-  name.innerHTML = restaurant.name;
+  const title = document.getElementById('restaurant-name');
+  title.appendChild(createFavoriteToggle(restaurant));
+  const name = document.createTextNode(restaurant.name);
+  title.appendChild(name);
 
   const address = document.getElementById('restaurant-address');
   setupElementWithLabel(address, 'Address:', restaurant.address);

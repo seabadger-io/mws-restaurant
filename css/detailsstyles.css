@@ -195,6 +195,16 @@ nav h1 a {
   justify-content: center;
 }
 
+.favorite-toggle[aria-checked="true"]::after {
+  content: "★ ";
+  color: #da0;
+}
+
+.favorite-toggle[aria-checked="false"]::after {
+  content: "☆ ";
+  color: #000;
+}
+
 /* ====================== Restaurant Details ====================== */
 .single-restaurant {
   width: calc(100% - 20px);
