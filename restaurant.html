@@ -74,7 +74,41 @@
         <!-- Beginning reviews -->
         <section id="reviews-container" class="single-reviews-container"
         role="region" label="Reviews">
-          <ul id="reviews-list" class="reviews-list"></ul>
+          <ul id="reviews-list" class="reviews-list">
+            <li>
+              <form id="addreview" aria-label="Add your review">
+                <input type="hidden" name="restaurant_id"
+                id="review-restaurant-id">
+                <div class="review-header">
+                  <p class="review-name">
+                    <input type="text" name="name" aria-label="Enter your name"
+                    placeholder="Your name" required>
+                  </p>
+                  <p class="review-rating">
+                    <label for="rating">Rating:</label>
+                    <select name="rating" id="rating">
+                      <option value="1">1</option>
+                      <option value="2">2</option>
+                      <option value="3">3</option>
+                      <option value="4">4</option>
+                      <option value="5" selected>5</option>
+                    </select>
+                  </p>
+                </div>
+                <div class="review-body">
+                  <p>
+                    <textarea placeholder="Were you happy here? Leave a feedback!"
+                    name="comments" required></textarea>
+                  </p>
+                  <p class="button-area">
+                    <a href="#" class="button reviewbtn" id="addreview-btn" role="button">
+                      Send review
+                    </a>
+                  </p>
+                </div>
+              </form>
+            </li>
+          </ul>
         </section>
         <!-- End reviews -->
 

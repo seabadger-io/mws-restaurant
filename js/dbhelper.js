@@ -239,7 +239,17 @@ class DBHelper {
   static toggleRestaurantFavorite(id, favorite) {
     return fetch(DBHelper.DATABASE_URL +
       `/restaurants/${id}/?is_favorite=${favorite}`,
-      { method: 'PUT'}
+      { method: 'PUT' }
     );
+  }
+
+  /**
+   * Add new restaurant review
+   */
+  static addRestaurantReview(review) {
+    return fetch(DBHelper.DATABASE_URL + '/reviews/', {
+      method: 'POST',
+      body: JSON.stringify(review)
+    });
   }
 }

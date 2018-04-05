@@ -202,10 +202,14 @@ const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     return;
   }
   const ul = document.getElementById('reviews-list');
-  reviews.forEach((review) => {
+  reviews.reverse().forEach((review) => {
     ul.appendChild(createReviewHTML(review));
   });
   container.appendChild(ul);
+  const rId = document.getElementById('review-restaurant-id');
+  rId.value = self.restaurant.id;
+  const addNewBtn = document.getElementById('addreview-btn');
+  addNewBtn.addEventListener('click', addReview);
 };
 
 /**
@@ -301,5 +305,15 @@ const toggleFavoriteHandler = (event) => {
   .then(() => {
     target.setAttribute('aria-checked', check);
   });
+  event.preventDefault();
+};
+
+const addReview = (event) => {
+  const form = document.querySelector('#addreview');
+  const review = {};
+  ['restaurant_id', 'name', 'rating', 'comments'].forEach((el) => {
+    review[el] = form.querySelector(`[name='${el}']`).value;
+  });
+  DBHelper.addRestaurantReview(review);
   event.preventDefault();
 };

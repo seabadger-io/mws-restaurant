@@ -303,6 +303,30 @@ nav h1 a {
 
 .review-body {
   padding: 5px;
+  display: flex;
+  flex-flow: column;
+}
+
+.review-body p {
+  margin: 0;
+  padding: 5px;
+}
+
+.review-body textarea {
+  width: calc(100% - 10px);
+  min-height: 100px;
+}
+
+.review-body .button-area {
+  display: flex;
+  flex-flow: column;
+}
+
+a.reviewbtn,
+a.reviewbtn:visited {
+  color: #fff;
+  align-self: flex-end;
+  margin: 0 10px 0 0;
 }
 
 /* ===== Breakpoints ===== */
