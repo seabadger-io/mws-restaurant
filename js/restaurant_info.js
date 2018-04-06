@@ -160,6 +160,13 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
       fillReviewsHTML(reviews);
     }
   });
+
+  // set static map
+  const mapImg = document.querySelector('#map').querySelector('img');
+  if (null !== mapImg) {
+    mapImg.src = `https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCWYfWK4x2AWzzNW1B6YqeMg9JRmBRBygU&center=${restaurant.latlng.lat},${restaurant.latlng.lng}&zoom=12&scale=1&size=400x300&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:${restaurant.name}%7C${restaurant.latlng.lat},${restaurant.latlng.lng}`;
+    mapImg.alt = `Map of ${restaurant.name}`;
+  }
 };
 
 /**
