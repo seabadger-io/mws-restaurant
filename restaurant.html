@@ -44,7 +44,7 @@
         <!-- Beginning restaurant -->
         <section id="restaurant-container" class="single-restaurant-details"
         role="region" label="Restaurant details">
-          <h2 id="restaurant-name" tabindex="1"></h2>
+          <h2 id="restaurant-name" tabindex="0"></h2>
           <div class="restaurant-img" id="restaurant-img">
           </div>
           <div class="restaurant-details-text">
@@ -58,7 +58,7 @@
         <section id="opening-hours" class="single-opening-hours"
         role="region" label="Restaurant opening hours">
           <table id="restaurant-hours" class="restaurant-hours">
-            <caption tabindex="1">Opening hours</caption>
+            <caption tabindex="0">Opening hours</caption>
           </table>
         </section>
         <!-- End opening hours -->
@@ -98,8 +98,9 @@
                 <div class="review-body">
                   <p>
                     <textarea placeholder="Were you happy here? Leave a feedback!"
-                    name="comments" required></textarea>
+                    name="comments" required aria-label="Enter your comments"></textarea>
                   </p>
+                  <span class="form-warning"></span>
                   <p class="button-area">
                     <a href="#" class="button reviewbtn" id="addreview-btn" role="button">
                       Send review

@@ -329,6 +329,17 @@ a.reviewbtn:visited {
   margin: 0 10px 0 0;
 }
 
+input:invalid,
+textarea:invalid {
+  border: 2px dashed #f00;
+}
+
+.form-warning {
+  display: none;
+  color: #f00;
+  width: 100%;
+}
+
 /* ===== Breakpoints ===== */
 
 @media screen and (min-width: 500px) {
@@ -365,7 +376,7 @@ a.reviewbtn:visited {
   }
 
   .reviews-list li {
-    max-width: 80%;
+    width: 80%;
   }
 
   .reviews-list li:nth-child(even) {

@@ -186,11 +186,19 @@ const fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hour
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = (reviews = self.restaurant.reviews) => {
+  reviews.forEach((review) => {
+    for (const key in review) {
+      if (typeof review[key] === 'string' &&
+          review[key].indexOf('<') > -1) {
+        review[key] = review[key].replace('<', '&lt;');
+      }
+    }
+  });
   const container = document.getElementById('reviews-container');
   const anchor = document.createElement('a');
   anchor.name='reviews';
   const title = document.createElement('h3');
-  title.setAttribute('tabindex', '1');
+  title.setAttribute('tabindex', '0');
   title.innerHTML = 'Reviews';
   anchor.appendChild(title);
   container.appendChild(anchor);
@@ -309,11 +317,28 @@ const toggleFavoriteHandler = (event) => {
 };
 
 const addReview = (event) => {
+  event.preventDefault();
   const form = document.querySelector('#addreview');
   const review = {};
-  ['restaurant_id', 'name', 'rating', 'comments'].forEach((el) => {
-    review[el] = form.querySelector(`[name='${el}']`).value;
+  const warn = form.querySelector('.form-warning');
+  warn.style.display = 'none';
+  const fields = ['restaurant_id', 'name', 'rating', 'comments'];
+  for (let i = 0; i < fields.length; i++) {
+    const el = fields[i];
+    const domEl = form.querySelector(`[name='${el}']`);
+    if (domEl.validationMessage != '') {
+      warn.innerHTML = `Error in ${el} field. ${domEl.validationMessage}`;
+      warn.style.display = 'flex';
+      return;
+    }
+    review[el] = domEl.value;
+  };
+  DBHelper.addRestaurantReview(review).then((response) => {
+    form.reset();
+    response.json().then((data) => {
+      const ul = document.getElementById('reviews-list');
+      const li = createReviewHTML(data);
+      ul.insertBefore(li, ul.childNodes[1]);
+    });
   });
-  DBHelper.addRestaurantReview(review);
-  event.preventDefault();
 };
