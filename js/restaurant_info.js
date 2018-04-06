@@ -24,27 +24,24 @@ const initializeMap = () => {
 };
 
 /**
- * Add Google map initialization to lazy loader, called from HTML.
+ * Add Google map init callback
  */
 window.initMap = () => {
-  const mapTarget = document.querySelector('#map-container');
-  const lazy = new LazyLoader(() => {
-    // prevent preloading maps before loading content unless page is scrolled
-    if (document.readyState === 'complete' ||
-    document.documentElement.scrollTop || document.body.scrollTop) {
-      initializeMap();
-      mapTarget.querySelector('#map').classList.remove('hidden');
-      return true;
-    } else {
-      return false;
-    }
-  });
-  if (lazy.isEnabled()) {
-    lazy.observeEntry(mapTarget);
-  } else {
-    initializeMap();
-    mapTarget.querySelector('#map').classList.remove('hidden');
+  initializeMap();
+};
+
+/**
+ * Load interactive map on user request
+ */
+const loadInteractiveMap = (event) => {
+  const ms = document.querySelector('#mapScript');
+  if (null === ms) {
+    const addMs = document.createElement('script');
+    addMs.id = 'mapScript';
+    addMs.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCWYfWK4x2AWzzNW1B6YqeMg9JRmBRBygU&libraries=places&callback=initMap';
+    document.querySelector('head').append(addMs);
   }
+  event.preventDefault();
 };
 
 /**
@@ -164,9 +161,13 @@ const fillRestaurantHTML = (restaurant = self.restaurant) => {
   // set static map
   const mapImg = document.querySelector('#map').querySelector('img');
   if (null !== mapImg) {
-    mapImg.src = `https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCWYfWK4x2AWzzNW1B6YqeMg9JRmBRBygU&center=${restaurant.latlng.lat},${restaurant.latlng.lng}&zoom=12&scale=1&size=400x300&maptype=roadmap&format=png&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:${restaurant.name}%7C${restaurant.latlng.lat},${restaurant.latlng.lng}`;
+    mapImg.src = `https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCWYfWK4x2AWzzNW1B6YqeMg9JRmBRBygU&center=${restaurant.latlng.lat},${restaurant.latlng.lng}&zoom=12&scale=1&size=400x300&maptype=roadmap&format=png8&visual_refresh=true&markers=size:mid%7Ccolor:0xff0000%7Clabel:${restaurant.name}%7C${restaurant.latlng.lat},${restaurant.latlng.lng}`;
     mapImg.alt = `Map of ${restaurant.name}`;
   }
+
+  // load interactive map on request
+  const intMapBtn = document.querySelector('#mapoverlay');
+  intMapBtn.addEventListener('click', loadInteractiveMap);
 };
 
 /**
