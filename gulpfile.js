@@ -11,6 +11,13 @@ const htmlreplace = require('gulp-html-replace');
 const htmlmin = require('gulp-htmlmin');
 const penthouse = require('penthouse');
 const sourcemaps = require('gulp-sourcemaps');
+const gulpif = require('gulp-if');
+const replace = require('gulp-replace');
+
+const config = {
+  isprod: false,
+  dist: 'dist'
+};
 
 process.on('unhandledRejection', (up) => {
   throw up;
@@ -37,7 +44,7 @@ gulp.task('image', () => {
       '--target', 40, '--min', 30, '--max', 60],
       mozjpeg: ['-optimize', '-progressive']
     }))
-    .pipe(gulp.dest('dist/img'));
+    .pipe(gulp.dest( `${config.dist}/img`));
 });
 
 gulp.task('logo', () => {
@@ -65,23 +72,23 @@ gulp.task('logo', () => {
     .pipe(image({
       optipng: ['-i 1', '-strip all', '-fix', '-o7', '-force']
     }))
-    .pipe(gulp.dest('dist/img'));
+    .pipe(gulp.dest(`${config.dist}/img`));
 });
 
 gulp.task('manifest', ['logo'], () => {
   return gulp.src('manifest.json')
-    .pipe(gulp.dest('dist'));
+    .pipe(gulp.dest(config.dist));
 });
 
 gulp.task('css', () => {
   return gulp.src(['css/mainstyles.css', 'css/detailsstyles.css'])
   .pipe(cleancss({}))
-  .pipe(gulp.dest('dist/css'));
+  .pipe(gulp.dest(`${config.dist}/css`));
 });
 
 gulp.task('sw', () => {
   return gulp.src('sw.js')
-  .pipe(sourcemaps.init())
+  .pipe(gulpif(!config.isprod, sourcemaps.init()))
   .pipe(babel({
     plugins: [
       ['transform-es2015-arrow-functions', { 'spec': true }]
@@ -89,16 +96,16 @@ gulp.task('sw', () => {
     presets: ['@babel/env']
   }))
   .pipe(uglify({}))
-  .pipe(sourcemaps.write())
+  .pipe(gulpif(!config.isprod, sourcemaps.write()))
   .on('error', (err) => {
     gutil.log(gutil.colors.red('[Error]'), err.toString());
   })
-  .pipe(gulp.dest('dist/'));
+  .pipe(gulp.dest(config.dist));
 });
 
 gulp.task('mainjs', ['mainhtml', 'sw', 'manifest'], () =>{
   return gulp.src(['node_modules/idb/lib/idb.js', 'js/app.js', 'js/dbhelper.js', 'js/main.js'])
-  .pipe(sourcemaps.init())
+  .pipe(gulpif(!config.isprod, sourcemaps.init()))
   .pipe(babel({
     plugins: [
       ['transform-es2015-arrow-functions', { 'spec': true }]
@@ -106,12 +113,14 @@ gulp.task('mainjs', ['mainhtml', 'sw', 'manifest'], () =>{
     presets: ['@babel/env']
   }))
   .pipe(concat({ path: 'mainbundle.js', stat: { mode: 0666 } }))
+  .pipe(gulpif(config.isprod,
+    replace('http://localhost:1337', 'https://mws-restaurant-sb.appspot.com')))
   .pipe(uglify({}))
-  .pipe(sourcemaps.write())
+  .pipe(gulpif(!config.isprod, sourcemaps.write()))
   .on('error', (err) => {
     gutil.log(gutil.colors.red('[Error]'), err.toString());
   })
-  .pipe(gulp.dest('dist/js'));
+  .pipe(gulp.dest(`${config.dist}/js`));
 });
 
 gulp.task('mainhtml', () => {
@@ -129,13 +138,13 @@ gulp.task('mainhtml', () => {
         }
       }))
       .pipe(htmlmin({ collapseWhitespace: true }))
-      .pipe(gulp.dest('dist'));
+      .pipe(gulp.dest(config.dist));
   });
 });
 
 gulp.task('detailsjs', ['detailshtml'], () =>{
   return gulp.src(['node_modules/idb/lib/idb.js', 'js/app.js', 'js/dbhelper.js', 'js/restaurant_info.js'])
-  .pipe(sourcemaps.init())
+  .pipe(gulpif(!config.isprod, sourcemaps.init()))
   .pipe(babel({
     plugins: [
       ['transform-es2015-arrow-functions', { 'spec': true }]
@@ -143,12 +152,14 @@ gulp.task('detailsjs', ['detailshtml'], () =>{
     presets: ['@babel/env']
   }))
   .pipe(concat({ path: 'detailsbundle.js', stat: { mode: 0666 } }))
+  .pipe(gulpif(config.isprod,
+    replace('http://localhost:1337', 'https://mws-restaurant-sb.appspot.com')))
   .pipe(uglify({}))
-  .pipe(sourcemaps.write())
+  .pipe(gulpif(!config.isprod, sourcemaps.write()))
   .on('error', (err) => {
     gutil.log(gutil.colors.red('[Error]'), err.toString());
   })
-  .pipe(gulp.dest('dist/js'));
+  .pipe(gulp.dest(`${config.dist}/js`));
 });
 
 gulp.task('detailshtml', () => {
@@ -166,15 +177,22 @@ gulp.task('detailshtml', () => {
         }
       }))
       .pipe(htmlmin({ collapseWhitespace: true }))
-      .pipe(gulp.dest('dist'));
+      .pipe(gulp.dest(config.dist));
   });
 });
 
 gulp.task('clean', function () {
   return del.sync([
-    'dist'
+    config.dist
   ]);
 });
+
+gulp.task('setprod', () => {
+  config.isprod = true;
+  config.dist = 'dist-prod';
+});
+
+gulp.task('prod', ['setprod', 'default']);
 
 gulp.task('default', ['clean'], function () {
   gulp.start('image');
