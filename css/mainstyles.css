@@ -126,6 +126,7 @@ img {
   background-color: rgba(0,0,0,0.75);
   justify-content: center;
   align-content: center;
+  z-index: 100;
 }
 
 #toaster-message {
