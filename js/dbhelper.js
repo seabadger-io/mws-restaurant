@@ -4,6 +4,22 @@
 const restaurantsCache = new ObjectCache('restaurants');
 const reviewsCache = new ObjectCache('reviews');
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.addEventListener('message', (event) => {
+    if (event.data.message === 'cache_refresh') {
+      // try to update cache
+      const cacheinfo = event.data.cacheinfo;
+      if (cacheinfo.target === 'restaurant') {
+        console.log('updating restaurant', cacheinfo.id);
+        DBHelper.fetchRestaurantById(cacheinfo.id, () => {});
+      } else {
+        console.log('updating reviews', cacheinfo.id);
+        DBHelper.fetchReviews(cacheinfo.id, () => {});
+      }
+    }
+  });
+};
+
 class DBHelper {
   /**
    * Database URL.

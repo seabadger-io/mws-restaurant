@@ -109,6 +109,38 @@ img {
   border: 0;
 }
 
+.waiting {
+  background-color: #ffdfc9;
+  color: #000;
+  cursor: wait;
+}
+
+#toaster {
+  display: none;
+  flex-flow: row wrap;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  line-height: 3em;
+  background-color: rgba(0,0,0,0.75);
+  justify-content: center;
+  align-content: center;
+}
+
+#toaster-message {
+  flex-basis: calc(80% - 10px);
+  color: #fff;
+  text-align: left;
+  font-size: 1.2em;
+  padding: 5px;
+}
+
+#toaster-button {
+  flex-basis: 20%;
+  align-self: center;
+}
+
 /* ====================== Navigation ====================== */
 nav {
   width: 100%;

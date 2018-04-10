@@ -1,11 +1,114 @@
+let requestCache;
+let retryInProgress = 0;
+
 if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('/sw.js', { scope: '/' })
     .then((reg) => {
       console.log('SW Registration successful. Scope is ' + reg.scope);
+      requestCache = new ObjectCache('failedRequests', true);
+      navigator.serviceWorker.addEventListener('message', (event) => {
+        if (event.data.message === 'request_failed') {
+          requestCache.put(event.data.request);
+          showToaster('Some of your changes could not be saved',
+          'Retry', runRetryRequests);
+          retryIfOnline();
+        }
+      });
+      document.addEventListener('readystatechange', () => {
+        if (document.readyState === 'complete') {
+          requestCache.getAll().then((requests) => {
+            if (requests.length) {
+              showToaster('There are unsaved changes',
+              'Save', runRetryRequests);
+            }
+          });
+        }
+      });
     }).catch((error) => {
       console.log('SW Registration failed with ' + error);
     });
 }
+
+// document.ononline doesn't seem to be reliable,
+// navigator.onLine looks like a better source
+const retryIfOnline = () => {
+  setTimeout(() => {
+    if (navigator.onLine) {
+      runRetryRequests();
+    } else {
+      retryIfOnline();
+    }
+  }, 2000);
+};
+
+const runRetryRequests = () => {
+  retryInProgress++;
+  if (retryInProgress !== 1) return;
+  showToaster('Retrying requests, please wait...', null, null);
+  retryRequests().then((success) => {
+    if (success) {
+      showToaster('Your changes were successfully stored. ' +
+      'Reload the page to see the latest changes', 'Reload', () => {
+        window.location.reload();
+      });
+    } else {
+      showToaster('Some of your changes could not be saved',
+      'Retry', runRetryRequests);
+      retryIfOnline();
+    }
+    retryInProgress = 0;
+  });
+};
+
+const showToaster = (message, btntext, callback) => {
+  const toaster = document.querySelector('#toaster');
+  if (null !== toaster) {
+    toaster.querySelector('#toaster-message')
+      .innerHTML = message;
+    const button = toaster.querySelector('#toaster-button').querySelector('a');
+    if (btntext !== null) {
+      button.innerHTML = btntext;
+      button.classList.remove('waiting');
+    } else {
+      button.innerHTML = 'Ok';
+      button.classList.add('waiting');
+    }
+    button.onclick = callback;
+    toaster.style.display = 'flex';
+  }
+};
+
+const hideToaster = () => {
+  const toaster = document.querySelector('#toaster');
+  if (null !== toaster) {
+    toaster.removeAttribute('style');
+  }
+};
+
+const retryRequests = () => {
+  const retries = [];
+  return new Promise((resolve) => {
+    requestCache.takeAll().then((requests) => {
+      requests.forEach((request) => {
+        const r = fetch(request.url, {
+          method: request.method,
+          body: request.body ? JSON.stringify(request.body) : undefined
+        });
+        retries.push(r);
+      });
+      Promise.all(retries)
+      .then(() => {
+        return resolve(true);
+      })
+      .catch(() => {
+        return resolve(false);
+      });
+    })
+    .catch(() => {
+      return resolve(false);
+    });
+  });
+};
 
 /** 
  * LazyLoader - lazy load entries using callback
@@ -86,6 +189,30 @@ class ObjectCache {
       return db.transaction('cache')
         .objectStore('cache').index('by-id')
         .getAll();
+    });
+  }
+
+  /**
+   * get all elements and delete them from the db
+   */
+  takeAll() {
+    const items = [];
+    return new Promise((resolve, reject) => {
+      this.cache.then((db) => {
+        const tx = db.transaction('cache', 'readwrite');
+        tx.objectStore('cache').index('by-id').iterateCursor((cursor) => {
+          if (!cursor) return;
+          items.push(cursor.value);
+          cursor.delete();
+          cursor.continue();
+        });
+        tx.complete.then(() => {
+          resolve(items);
+        });
+      })
+      .catch((error) => {
+        reject(error);
+      });
     });
   }
 

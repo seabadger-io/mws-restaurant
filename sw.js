@@ -5,6 +5,40 @@ const currentCaches = [currentCache, currentImgCache];
 
 self.addEventListener('fetch', (event) => {
   const requestUrl = new URL(event.request.url);
+  const requestCopy = event.request.clone();
+
+  /* handle API requests */
+  if (['POST', 'PUT', 'DELETE']
+  .indexOf(event.request.method.toUpperCase()) > -1) {
+    event.respondWith(
+      fetch(event.request).then((response) => {
+        response.clone().json().then((responsedata) => {
+          let id;
+          let target;
+          if ('restaurant_id' in responsedata) {
+            // it's a review
+            id = responsedata['restaurant_id'];
+            target = 'review';
+          } else {
+            id = responsedata['id'];
+            target = 'restaurant';
+          }
+          sendCacheNotification({
+            'target': target,
+            'id': id
+          });
+        });
+        return response;
+      })
+      .catch((error) => {
+        sendRequestNotification(requestCopy);
+        return new Promise((resolve, reject) => {
+          reject('API request failed', error);
+        });
+      })
+    );
+    return;
+  }
 
   /* some objects are cached by dbhelper in IndexedDB */
   if (requestUrl.pathname.match('^\/(restaurants|reviews)')) {
@@ -82,6 +116,45 @@ self.servePhoto = (request) => {
       return fetch(request).then((networkResponse) => {
         cache.put(storageUrl, networkResponse.clone());
         return networkResponse;
+      });
+    });
+  });
+};
+
+self.sendCacheNotification = (data) => {
+  self.clients.matchAll().then((clients) => {
+    clients.forEach((client) => {
+      client.postMessage({
+        message: 'cache_refresh',
+        cacheinfo: data
+      });
+    });
+  });
+};
+
+self.sendRequestNotification = (requestCopy) => {
+  new Promise((resolve) => {
+    requestCopy.json().then((body) => {
+      resolve({
+        url: requestCopy.url,
+        method: requestCopy.method,
+        body: body
+      });
+    })
+    .catch(() => {
+      resolve({
+        url: requestCopy.url,
+        method: requestCopy.method
+      });
+    });
+  })
+  .then((requestData) => {
+    self.clients.matchAll().then((clients) => {
+      clients.forEach((client) => {
+        client.postMessage({
+          message: 'request_failed',
+          request: requestData
+        });
       });
     });
   });
