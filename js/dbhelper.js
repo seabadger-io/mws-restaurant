@@ -10,10 +10,8 @@ if ('serviceWorker' in navigator) {
       // try to update cache
       const cacheinfo = event.data.cacheinfo;
       if (cacheinfo.target === 'restaurant') {
-        console.log('updating restaurant', cacheinfo.id);
         DBHelper.fetchRestaurantById(cacheinfo.id, () => {});
       } else {
-        console.log('updating reviews', cacheinfo.id);
         DBHelper.fetchReviews(cacheinfo.id, () => {});
       }
     }
