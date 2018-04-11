@@ -9,24 +9,28 @@ if ('serviceWorker' in navigator) {
       navigator.serviceWorker.addEventListener('message', (event) => {
         if (event.data.message === 'request_failed') {
           requestCache.put(event.data.request);
-          showToaster('Some of your changes could not be saved',
-          'Retry', runRetryRequests);
-          retryIfOnline();
+          showUnsavedChangesToaster();
         }
       });
       document.addEventListener('readystatechange', () => {
         if (document.readyState === 'complete') {
-          requestCache.getAll().then((requests) => {
-            if (requests.length) {
-              showToaster('There are unsaved changes',
-              'Save', runRetryRequests);
-            }
-          });
+          showUnsavedChangesToaster();
         }
       });
     }).catch((error) => {
       console.log('SW Registration failed with ' + error);
     });
+}
+
+const showUnsavedChangesToaster = () => {
+  requestCache.getAll().then((requests) => {
+    if (requests.length) {
+      const chg = requests.length == 1 ? 'change' : 'changes';
+      showToaster(`${requests.length} ${chg} were not saved, ` +
+      `but don't worry, nothing is lost. You can retry saving anytime.`,
+      'Retry', runRetryRequests);
+    }
+  });
 }
 
 // document.ononline doesn't seem to be reliable,
@@ -52,8 +56,7 @@ const runRetryRequests = () => {
         window.location.reload();
       });
     } else {
-      showToaster('Some of your changes could not be saved',
-      'Retry', runRetryRequests);
+      showUnsavedChangesToaster();
       retryIfOnline();
     }
     retryInProgress = 0;
